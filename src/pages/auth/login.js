@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { GoMail } from 'react-icons/go'
 import { BiLock } from 'react-icons/bi'
+
 import Image from 'next/image'
 import logo from '../../assets/img/logo.png'
 import bg_login_side from '../../assets/img/bg_login_side.png'
@@ -11,11 +12,13 @@ function login() {
 		<div className="flex h-screen">
 			<div className="bg-login w-[50%] bg-cover bg-no-repeat md:block hidden flex flex-col justify-center items-center px-12 py-8">
 				<div className="">
-					<Image src={logo} className="w-[85px] h-[20px]" alt="picture_logo" />
+					<Link href="/">
+						<Image src={logo} className="w-[85px] h-[20px]" alt="picture_logo" />
+					</Link>
 				</div>
 				<div className="flex items-center justify-center">
-					<div className="flex items-center justify-center">
-						<Image src={bg_login_side} className="w-[100%]" alt="picture_bg" />
+					<div className="flex items-center justify-center  ">
+						<Image src={bg_login_side} className="w-[65%]" alt="picture_bg" />
 					</div>
 				</div>
 				<div className="flex flex-col gap-12 mt-8">
@@ -43,7 +46,7 @@ function login() {
 							</div>
 						</div>
 						<div className="w-full mt-12">
-							<button className="btn  bg-[#69BEB9] hover:bg-[#FECC01] w-full">login</button>
+							<button className="btn  bg-[#69BEB9] w-full">login</button>
 						</div>
 						<p className="text-right">
 							<Link className="font-bold" href="/forgotpassword">
@@ -54,7 +57,7 @@ function login() {
 					<div className="flex items-center justify-center">
 						<div className="mt-8">
 							Don`t have an account?
-							<Link className="font-bold" href="/register">
+							<Link className="font-bold" href="/auth/register">
 								Register Here
 							</Link>
 						</div>
