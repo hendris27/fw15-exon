@@ -7,7 +7,7 @@ import Image from 'next/image';
 import logo from '../../assets/img/logo.png';
 import bg_login_side from '../../assets/img/bg_login_side.png';
 
-export default function forgotPassword() {
+export default function ForgotPassword() {
   return (
     <div className="flex h-screen">
       <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden flex flex-col items-center px-12 py-8">
