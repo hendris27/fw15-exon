@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { RxDashboard } from 'react-icons/rx';
-import { AiOutlineArrowUp, AiOutlineArrowDown, AiOutlinePlus, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
+import { AiOutlineArrowUp, AiOutlineArrowDown, AiOutlinePlus } from 'react-icons/ai';
 import Headers from '@/components/header';
 import Footers from '@/components/footers';
+import Aside from '@/components/aside';
 import Image from 'next/image';
 import default_picture from '../assets/img/default.jpg';
 
@@ -12,40 +12,7 @@ export default function Home() {
     <div className="h-screen">
       <Headers />
       <div className="flex bg-[#E8F6EF] px-[100px] py-[50px] gap-4 h-full ">
-        <div className="bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
-          <div className="flex flex-col gap-8">
-            <div className="flex gap-8 ">
-              <div>
-                <RxDashboard size={25} color="#69BEB9" />
-              </div>
-              <div className="font-bold text-[#69BEB9]">Dashboard</div>
-            </div>
-            <div className="flex gap-8 ">
-              <div>
-                <AiOutlineArrowUp size={25} color="#69BEB9" />
-              </div>
-              <div className="font-bold text-[#69BEB9]">Transfer</div>
-            </div>
-            <div className="flex gap-8 ">
-              <div>
-                <AiOutlinePlus size={25} color="#69BEB9" />
-              </div>
-              <div className="font-bold text-[#69BEB9]">Top Up</div>
-            </div>
-            <div className="flex gap-8 ">
-              <div>
-                <AiOutlineUser size={25} color="#69BEB9" />
-              </div>
-              <div className="font-bold text-[#69BEB9]">Profile</div>
-            </div>
-          </div>
-          <div className="flex gap-8 ">
-            <div>
-              <AiOutlineLogout size={25} color="red" />
-            </div>
-            <div className="font-bold text-[#FF0000]">Logout</div>
-          </div>
-        </div>
+        <Aside />
         <div className="flex-1 rounded-3xl flex flex-col gap-4">
           <div className="bg-[#69BEB9] shadow-2xl flex justify-between h-[180px] rounded-3xl px-8 py-8">
             <div className=" flex flex-col justify-between">
