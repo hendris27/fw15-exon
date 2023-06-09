@@ -4,7 +4,7 @@ import { AiOutlineArrowUp, AiOutlinePlus, AiOutlineUser, AiOutlineLogout } from 
 
 export default function Aside() {
   return (
-    <div className="bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
+    <div className="max-h-full bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
       <div className="flex flex-col gap-8">
         <button className="flex gap-8 ">
           <div>
