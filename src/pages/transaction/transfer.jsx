@@ -6,7 +6,7 @@ import Footers from '@/components/footers';
 import Aside from '@/components/aside';
 
 import Image from 'next/image';
-import default_picture from '../assets/img/default.jpg';
+import default_picture from '../../assets/img/default.jpg';
 
 export default function Home() {
   return (

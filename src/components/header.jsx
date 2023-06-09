@@ -4,13 +4,13 @@ import default_picture from '../assets/img/default.jpg';
 import logo from '../assets/img/logo-home.png';
 import Link from 'next/link';
 import { MdNotificationsNone } from 'react-icons/md';
-import { AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
+import { AiOutlineArrowUp, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
 
 export default function Header() {
   return (
     <div className="rounded-b-[20px] shadow-2xl flex justify-between px-[100px] py-8 items-center h-24">
       <div className="">
-        <Link href="/">
+        <Link href="/home">
           <Image src={logo} className="w-[105px] h-[30px]" alt="picture_logo" />
         </Link>
       </div>
@@ -26,12 +26,14 @@ export default function Header() {
             className="dropdown-content menu p-2 shadow  bg-base-100 rounded-box w-[200px] px-2s flex flex-col items-center justify-between "
           >
             <li>
-              <div className="flex gap-4 hover:bg-white items-center justify-center">
-                <div>
-                  <AiOutlineUser size={30} />
+              <Link href="/profile/profile" className="hover:bg-white">
+                <div className="flex gap-4 hover:bg-white items-center justify-center">
+                  <div>
+                    <AiOutlineUser size={30} />
+                  </div>
+                  <div className="font-bold text-medium hover:bg-white hover:text-accent ">My Profile</div>
                 </div>
-                <div className="font-bold text-medium hover:bg-white hover:text-accent ">My Profile</div>
-              </div>
+              </Link>
             </li>
             <div className="border-b-2 w-full hover:bg-white"></div>
             <li className="font-bold text-primary">
@@ -52,10 +54,29 @@ export default function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu p-2 shadow  bg-base-100 rounded-box w-[200px] px-2s flex flex-col items-center justify-between "
+            className="dropdown-content menu p-2 shadow  bg-base-100 rounded-box w-[350px] px-2s flex flex-col items-center justify-between "
           >
             <li>
-              <div className="flex gap-4 hover:bg-white items-center justify-center"></div>
+              <div className="flex flex-col gap-4 hover:bg-white items-center justify-center p-2">
+                <div className="flex bg-white rounded-xl shadow-xl w-[320px] gap-6 p-5 hover:bg-green-100">
+                  <div>
+                    <AiOutlineArrowUp size={25} color="#69BEB9" />
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <div className="text-[14px]">Accept from Joshua Lee</div>
+                    <div className="text-[18px] font-bold">Rp220.000</div>
+                  </div>
+                </div>
+                <div className="flex bg-white rounded-xl shadow-xl w-[320px] gap-6 p-5">
+                  <div>
+                    <AiOutlineArrowUp size={25} color="#69BEB9" />
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <div className="text-[14px]">Accept from Joshua Lee</div>
+                    <div className="text-[18px] font-bold">Rp220.000</div>
+                  </div>
+                </div>
+              </div>
             </li>
             <div className="border-b-2 w-full hover:bg-white"></div>
             <li className="font-bold text-primary">
