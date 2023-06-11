@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Headers from '@/components/header';
-import Footers from '@/components/footers';
-import Aside from '@/components/aside';
+import Headers from '@/components/Header';
+import Footers from '@/components/Footers';
+import Aside from '@/components/Aside';
 import Image from 'next/image';
 import Link from 'next/link';
 import default_picture from '../../assets/img/default.jpg';
@@ -15,7 +15,7 @@ export default function Profile() {
       <div className="flex bg-[#E8F6EF] px-[100px] py-[50px] gap-4 h-full ">
         <Aside />
         <div className="flex-1 bg-white rounded-3xl flex px-12 py-8">
-          <div className="bg-red-100 flex flex-col w-full items-center gap-2">
+          <div className="flex flex-col w-full items-center gap-2">
             <div className="rounded-xl overflow-hidden h-14 w-14 border-[#444cd4]">
               <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
             </div>
