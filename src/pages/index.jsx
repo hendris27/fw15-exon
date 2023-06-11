@@ -1,34 +1,85 @@
 import Link from 'next/link';
-import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'] });
-
 import Image from 'next/image';
+import default_picture from '../assets/img/default.jpg';
+
 import logo from '../assets/img/logo.png';
 import picture_home from '../assets/img/picture_home.png';
 import picture_sponsor from '../assets/img/sponsor.png';
 import picture_features from '../assets/img/picture_features.png';
-import { AiOutlinePhone, AiFillLock, AiOutlineDownload } from 'react-icons/ai';
+import { AiOutlinePhone, AiFillLock, AiOutlineDownload, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
+import cookieConfig from '@/assets/helpers/cookieConfig';
+import { withIronSessionSsr } from 'iron-session/next';
 
-export default function Home() {
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
+  const token = req.session?.token;
+  if (!token) {
+    res.setHeader('location', 'auth/sign-in');
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {},
+    };
+  }
+  return {
+    props: {
+      token,
+    },
+  };
+}, cookieConfig);
+
+export default function Home({ token }) {
   return (
     <main className="h-screen">
       <div className="bg-login h-[800px] bg-cover bg-no-repeat relative ">
         <header className="flex justify-between px-[100px] pt-8 items-center">
-          <div>
+          <Link href="/home">
             <Image src={logo} className="w-[160px] h-[45px]" alt="picture_logo" />
-          </div>
-          <div className="flex gap-4">
-            <div>
-              <Link href="/auth/login">
-                <button className="btn hover:bg-[#69BEB9] h-[35px] normal-case bg-transparent">Login</button>
-              </Link>
+          </Link>
+
+          {token ? (
+            <div className="dropdown dropdown-bottom dropdown-end">
+              <label tabIndex={0} className="btn m-1 bg-transparent outline-none border-0 hover:bg-transparent ">
+                <div className="rounded-xl overflow-hidden h-12 w-12 border-[#444cd4]">
+                  <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu p-2 shadow  bg-base-100 rounded-box w-[200px] px-2s flex flex-col items-center justify-between "
+              >
+                <li>
+                  <Link href="/profile/profile" className="hover:bg-white">
+                    <div className="flex gap-4 hover:bg-white items-center justify-center">
+                      <div>
+                        <AiOutlineUser size={30} />
+                      </div>
+                      <div className="font-bold text-medium hover:bg-white hover:text-accent ">My Profile</div>
+                    </div>
+                  </Link>
+                </li>
+                <div className="border-b-2 w-full hover:bg-white"></div>
+                <li className="font-bold text-primary">
+                  <div className="hover:bg-white flex gap2 ">
+                    <AiOutlineLogout size={25} color="red" />
+                    <div className="text-[#ff0000] font-bold hover:text-[16px] ">Logout</div>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <div>
-              <Link href="auth/register">
-                <button className="btn  normal-case">Sign up</button>
-              </Link>
+          ) : (
+            <div className="flex gap-4">
+              <div>
+                <Link href="/auth/sign-in">
+                  <button className="btn hover:bg-[#69BEB9] h-[35px] normal-case bg-transparent">Login</button>
+                </Link>
+              </div>
+              <div>
+                <Link href="auth/sign-up">
+                  <button className="btn  normal-case">Sign up</button>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </header>
         <div className="flex px-[100px]">
           <div className="flex gap-24 absolute bottom-[0px] ">
