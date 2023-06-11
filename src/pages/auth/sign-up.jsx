@@ -26,7 +26,7 @@ export default function SignUp() {
     setOpen(!open);
   }
   return (
-    <div className="md:flex h-m-screen">
+    <div className="md:flex h-min-screen">
       <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex md:flex-col px-12 py-8">
         <div className="">
           <Link href="/">
@@ -34,7 +34,7 @@ export default function SignUp() {
           </Link>
         </div>
         <div className="flex flex-col gap-4  items-center">
-          <Image src={bg_login_side} className="w-[65%] h-[100%]" alt="picture_bg" />
+          <Image src={bg_login_side} className="w-[55%] mt-[-30px] " alt="picture_bg" />
 
           <div className="font-bold text-[24px] ">App that Covering Banking Needs.</div>
           <div className="text-left w-[498px] ">
