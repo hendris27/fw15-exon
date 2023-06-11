@@ -1,11 +1,30 @@
 import React from 'react';
 
 import { AiOutlineArrowUp, AiOutlineArrowDown, AiOutlinePlus } from 'react-icons/ai';
-import Headers from '@/components/header';
-import Footers from '@/components/footers';
-import Aside from '@/components/aside';
+import Headers from '@/components/Header';
+import Footers from '@/components/Footers';
+import Aside from '@/components/Aside';
 import Image from 'next/image';
 import default_picture from '../assets/img/default.jpg';
+import cookieConfig from '@/assets/helpers/cookieConfig';
+import { withIronSessionSsr } from 'iron-session/next';
+
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
+  const token = req.session?.token;
+  if (!token) {
+    res.setHeader('location', 'auth/sign-in');
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {},
+    };
+  }
+  return {
+    props: {
+      token,
+    },
+  };
+}, cookieConfig);
 
 export default function Home() {
   return (
@@ -31,9 +50,8 @@ export default function Home() {
               </div>
               <div className="w-[162px]">
                 <button className="w-full flex gap-4 btn btn-primary rounded-xl normal-case">
-                  <div>
-                    <AiOutlinePlus size={25} color="white" />
-                  </div>
+                  <AiOutlinePlus size={25} color="white" />
+
                   <div className="text-white">Top Up</div>
                 </button>
               </div>
