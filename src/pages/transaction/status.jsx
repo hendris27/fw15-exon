@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Headers from '@/components/header';
-import Footers from '@/components/footers';
-import Aside from '@/components/aside';
+import Headers from '@/components/Header';
+import Footers from '@/components/Footers';
+import Aside from '@/components/Aside';
 import { FaCheckCircle, FaDownload } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 

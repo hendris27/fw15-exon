@@ -2,8 +2,8 @@ import React from 'react';
 
 import { RxDashboard } from 'react-icons/rx';
 import { AiOutlineArrowUp, AiOutlineArrowDown, AiOutlinePlus, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
-import Headers from '@/components/header';
-import Footers from '@/components/footers';
+import Headers from '@/components/Header';
+import Footers from '@/components/Footers';
 import Image from 'next/image';
 import default_picture from '../assets/img/default.jpg';
 

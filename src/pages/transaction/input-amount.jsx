@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Headers from '@/components/header';
-import Footers from '@/components/footers';
-import Aside from '@/components/aside';
+import Headers from '@/components/Header';
+import Footers from '@/components/Footers';
+import Aside from '@/components/Aside';
 import { AiOutlineEdit } from 'react-icons/ai';
 
 import Image from 'next/image';
