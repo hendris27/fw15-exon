@@ -2,8 +2,40 @@ import React from 'react';
 import { RxDashboard } from 'react-icons/rx';
 import { AiOutlineArrowUp, AiOutlinePlus, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
 import Link from 'next/link';
+import cookieConfig from '@/assets/helpers/cookieConfig';
+import { withIronSessionSsr } from 'iron-session/next';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
+  const token = req.session?.token;
+  if (!token) {
+    res.setHeader('location', 'auth/login');
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {},
+    };
+  }
+  return {
+    props: {
+      token,
+    },
+  };
+}, cookieConfig);
 
 export default function Aside() {
+  const [modal, setCheckModal] = useState(false);
+  const router = useRouter();
+  const doLogout = async () => {
+    await axios.get('/api/logout');
+    router.replace('/auth/sign-in');
+  };
+  function checkModal() {
+    setCheckModal(!modal);
+  }
+
   return (
     <div className="max-h-full bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
       <div className="flex flex-col gap-8">
@@ -66,12 +98,28 @@ export default function Aside() {
           </button>
         </Link>
       </div>
-      <button className="flex gap-8 ">
-        <div>
-          <AiOutlineLogout size={25} color="red" />
+      <div className="flex gap-8 ">
+        <AiOutlineLogout size={25} color="red" />
+
+        <button onClick={checkModal} className="font-bold text-[#FF0000]">
+          Logout
+        </button>
+      </div>
+      <input type="checkbox" id="my_modal_6" className="modal-toggle" checked={modal} />
+      <div className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Attention !</h3>
+          <p className="py-4">Are you sure to Logout?</p>
+          <div className="modal-action">
+            <button onClick={doLogout} className="btn btn-error text-white normal-case">
+              Yes
+            </button>
+            <button onClick={checkModal} className="btn btn-success text-white normal-case">
+              No
+            </button>
+          </div>
         </div>
-        <div className="font-bold text-[#FF0000]">Logout</div>
-      </button>
+      </div>
     </div>
   );
 }
