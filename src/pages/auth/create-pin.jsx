@@ -5,20 +5,9 @@ import Image from 'next/image';
 import logo from '../../assets/img/logo.png';
 import bg_login_side from '../../assets/img/bg_login_side.png';
 
-import { useState } from 'react';
+import PinInput from '@/components/PinInput';
 
 export default function CreatePin() {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-
-  const handleOtpChange = (e, index) => {
-    const newOtp = [...otp];
-    newOtp[index] = e.target.value;
-    setOtp(newOtp);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
   return (
     <div className="flex h-screen">
       <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden flex flex-col items-center px-12 py-8">
@@ -48,19 +37,8 @@ export default function CreatePin() {
               anyone about your FazzPay account password and the PIN.
             </div>
             <div className="w-full">
-              <form onSubmit={handleSubmit}>
-                <div className="flex gap-4">
-                  {otp.map((value, index) => (
-                    <input
-                      key={index}
-                      type="text"
-                      value={value}
-                      onChange={(e) => handleOtpChange(e, index)}
-                      maxLength={1}
-                      className="w-12 h-12 text-center border border-gray-300 rounded"
-                    />
-                  ))}
-                </div>
+              <form>
+                <PinInput onChangePin={console.log} />
                 <div className="w-full pt-12">
                   <button type="submit" className="btn  bg-[#69BEB9] normal-case w-full">
                     Confirm
