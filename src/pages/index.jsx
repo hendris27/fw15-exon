@@ -9,6 +9,9 @@ import picture_features from '../assets/img/picture_features.png';
 import { AiOutlinePhone, AiFillLock, AiOutlineDownload, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
 import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import axios from 'axios';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
   const token = req.session?.token;
@@ -28,6 +31,15 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
 }, cookieConfig);
 
 export default function Home({ token }) {
+  const [modal, setCheckModal] = useState(false);
+  const router = useRouter();
+  const doLogout = async () => {
+    await axios.get('/api/logout');
+    router.replace('/auth/sign-in');
+  };
+  function checkModal() {
+    setCheckModal(!modal);
+  }
   return (
     <main className="h-screen">
       <div className="bg-login h-[800px] bg-cover bg-no-repeat relative ">
@@ -37,7 +49,7 @@ export default function Home({ token }) {
           </Link>
 
           {token ? (
-            <div className="dropdown dropdown-bottom dropdown-end">
+            <div className="dropdown dropdown-bottom dropdown-end z-10">
               <label tabIndex={0} className="btn m-1 bg-transparent outline-none border-0 hover:bg-transparent ">
                 <div className="rounded-xl overflow-hidden h-12 w-12 border-[#444cd4]">
                   <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
@@ -59,12 +71,27 @@ export default function Home({ token }) {
                 </li>
                 <div className="border-b-2 w-full hover:bg-white"></div>
                 <li className="font-bold text-primary">
-                  <div className="hover:bg-white flex gap2 ">
+                  <button onClick={checkModal} className="hover:bg-white flex gap2 ">
                     <AiOutlineLogout size={25} color="red" />
                     <div className="text-[#ff0000] font-bold hover:text-[16px] ">Logout</div>
-                  </div>
+                  </button>
                 </li>
               </ul>
+              <input type="checkbox" id="my_modal_6" className="modal-toggle" checked={modal} />
+              <div className="modal">
+                <div className="modal-box">
+                  <h3 className="font-bold text-lg">Attention !</h3>
+                  <p className="py-4">Are you sure to Logout?</p>
+                  <div className="modal-action">
+                    <button onClick={doLogout} className="btn btn-error text-white normal-case">
+                      Yes
+                    </button>
+                    <button onClick={checkModal} className="btn btn-success text-white normal-case">
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="flex gap-4">
@@ -82,7 +109,7 @@ export default function Home({ token }) {
           )}
         </header>
         <div className="flex px-[100px]">
-          <div className="flex gap-24 absolute bottom-[0px] ">
+          <div className="flex gap-24 absolute bottom-[0px] z-0 ">
             <div className="flex-col flex pt-24 gap-12">
               <div className="text-[60px] font-bold leading-[93px]">
                 Awesome App <p>For Saving Time.</p>
