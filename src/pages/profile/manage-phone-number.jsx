@@ -29,7 +29,7 @@ export default function ManagaPhoneNumber() {
                     </div>
                     <div className="w-full flex flex-1">
                       <input
-                        type="password"
+                        type="number"
                         placeholder="Enter your phone number"
                         className="flex flex-1 border-0 outline-none"
                       />
