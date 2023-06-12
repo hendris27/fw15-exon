@@ -2,7 +2,7 @@ import React from 'react';
 import { RxDashboard } from 'react-icons/rx';
 import { AiOutlineArrowUp, AiOutlinePlus, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
 import Link from 'next/link';
-import cookieConfig from '@/assets/helpers/cookieConfig';
+import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
