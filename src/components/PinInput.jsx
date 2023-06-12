@@ -2,12 +2,12 @@ import React from 'react';
 
 function PinInput({ onChangePin }) {
   const pinInput = {
-    input1: React.useState(),
-    input2: React.useState(),
-    input3: React.useState(),
-    input4: React.useState(),
-    input5: React.useState(),
-    input6: React.useState(),
+    input1: React.useRef(),
+    input2: React.useRef(),
+    input3: React.useRef(),
+    input4: React.useRef(),
+    input5: React.useRef(),
+    input6: React.useRef(),
   };
 
   const changeValue = (e) => {

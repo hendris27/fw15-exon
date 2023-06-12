@@ -1,14 +1,21 @@
 import React from 'react';
 
-import { BsSearch } from 'react-icons/bs';
 import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
 
 import Image from 'next/image';
-import default_picture from '../assets/img/default.jpg';
+import default_picture from '../../assets/img/default.jpg';
+import PinInput from '@/components/PinInput';
 
-export default function Home() {
+export default function Confirmation() {
+  // const router = useRouter();
+  // const email = useSelector((state) => state.auth.email);
+  const [pin, setPin] = React.useState('');
+  // const [showAlert, setShowAlert] = React.useState(false);
+  const submitPin = () => {
+    console.log(pin);
+  };
   return (
     <div className="min-h-screen">
       <Headers />
@@ -79,6 +86,12 @@ export default function Home() {
                   <p className="py-4 w-[320px] ">
                     Enter your 6 digits PIN for confirmation to continue transferring money.
                   </p>
+                  <div className="flex flex-col gap-8">
+                    <PinInput onChangePin={setPin} />
+                    <div type="submit" onClick={submitPin} className="btn btn-primary normal-case w-full">
+                      Continue
+                    </div>
+                  </div>
                 </form>
               </dialog>
             </div>

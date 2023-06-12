@@ -3,6 +3,7 @@ import React from 'react';
 import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
+import Link from 'next/link';
 
 export default function DetailProfile() {
   return (
@@ -51,7 +52,9 @@ export default function DetailProfile() {
                 </div>
               </div>
               <div className="flex justify-center">
-                <div className="text-accent">Manage</div>
+                <Link href="/profile/manage-phone-number">
+                  <button className="text-accent hover:font-bold">Manage</button>
+                </Link>
               </div>
             </div>
           </div>

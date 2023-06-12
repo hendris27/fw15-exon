@@ -12,16 +12,71 @@ import { Formik } from 'formik';
 import { useState } from 'react';
 import { FaEye } from 'react-icons/fa';
 import { FaEyeSlash } from 'react-icons/fa';
+import { withIronSessionSsr } from 'iron-session/next';
 
-export default function SignUp() {
+import coockieConfig from '@/helpers/cookieConfig';
+import axios from 'axios';
+import { saveEmail } from '@/redux/reducers/auth';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { MdError } from 'react-icons/md';
+
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
+  const token = req.session?.token;
+
+  if (token) {
+    res.setHeader('location', '/auth/login');
+    res.statusCode = 302;
+    res.end();
+    return { prop: { token } };
+  }
+
+  return {
+    props: {
+      token: null,
+    },
+  };
+}, coockieConfig);
+
+function SignUp() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+
   const [open, setOpen] = useState(false);
-
   const validationSchema = Yup.object({
-    firstname: Yup.string().required('Firstname is empty !'),
-    lastname: Yup.string().required('Lastname is empty !'),
+    username: Yup.string().required('username is empty !'),
     email: Yup.string().required('Email is empty !'),
     password: Yup.string().required('Password is empty !'),
   });
+
+  const doRegister = async (values) => {
+    try {
+      setLoading(true);
+      setErrorMessage('');
+      const form = new URLSearchParams({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      }).toString();
+
+      const { data } = await axios.post('http://localhost:3000/api/register', form);
+      console.log(data);
+
+      if (data.success === true) {
+        dispatch(saveEmail(values.email));
+        router.push('/auth/create-pin');
+      }
+      const message = data.message;
+      if (message?.includes('duplicate')) {
+        setErrorMessage('Email already used');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   function showEye() {
     setOpen(!open);
   }
@@ -53,8 +108,13 @@ export default function SignUp() {
           </div>
 
           <Formik
-            initialValues={{ email: '', password: '', firstname: '', lastname: '' }}
+            initialValues={{
+              email: '',
+              password: '',
+              username: '',
+            }}
             validationSchema={validationSchema}
+            onSubmit={doRegister}
           >
             {({ values, errors, touched, handleBlur, handleSubmit, handleChange, isSubmitting }) => {
               return (
@@ -69,6 +129,12 @@ export default function SignUp() {
                       mobile phone? we cover all of that for you!
                     </div>
                   </div>
+                  {errorMessage && (
+                    <div className="flex flex-row justify-center alert alert-error shadow-lg text-white text-lg">
+                      <MdError size={30} />
+                      {errorMessage}
+                    </div>
+                  )}
                   {/*mobile*/}
                   <div className="flex flex-col justify-center items-center md:hidden">
                     <div className="text-[24px]">Sign Up</div>
@@ -77,43 +143,24 @@ export default function SignUp() {
                   <div className="relative border-b-2 w-full pt-8">
                     <input
                       type="text"
-                      name="firstname"
-                      id="firstname"
+                      name="username"
+                      id="username"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.firstname}
-                      placeholder="Enter your firstname"
+                      value={values.username}
+                      placeholder="Enter your username"
                       className="input w-full  pl-12 border-0 outline-none hover:outline-none hover:border-0"
                     />
                     <div className="absolute bottom-2 left-2">
                       <AiOutlineUser size={30} />
                     </div>
                   </div>
-                  {errors.firstname && touched.firstname && (
-                    <label htmlFor="firstname" className="label pl-4">
+                  {errors.username && touched.username && (
+                    <label htmlFor="username" className="label pl-4">
                       <span className="label-text-alt font-bold text-md text-error">{errors.firstname}</span>
                     </label>
                   )}
-                  <div className="relative border-b-2 w-full">
-                    <input
-                      type="text"
-                      name="lastname"
-                      id="lastname"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.lastname}
-                      placeholder="Enter your lastname"
-                      className="input w-full  pl-12 border-0 outline-none hover:outline-none hover:border-0"
-                    />
-                    <div className="absolute bottom-2 left-2">
-                      <AiOutlineUser size={30} />
-                    </div>
-                  </div>
-                  {errors.lastname && touched.lastname && (
-                    <label htmlFor="lastname" className="label pl-4">
-                      <span className="label-text-alt font-bold text-md text-error">{errors.lastname}</span>
-                    </label>
-                  )}
+
                   <div className="relative border-b-2 w-full">
                     <input
                       type="email"
@@ -161,11 +208,15 @@ export default function SignUp() {
                       <span className="label-text-alt font-bold text-md text-error">{errors.password}</span>
                     </label>
                   )}
-                  <div className="w-full mt-12">
-                    <button type="submit" disabled={isSubmitting} className="btn  bg-[#69BEB9] w-full normal-case">
+                  {loading ? (
+                    <button type="submit" className="btn btn-primary normal-case text-white">
+                      <span className="loading loading-spinner loading-sm"></span>
+                    </button>
+                  ) : (
+                    <button type="submit" className="btn btn-primary normal-case text-white">
                       Sign Up
                     </button>
-                  </div>
+                  )}
 
                   <div className="flex pt-4 flex justify-center text-center">
                     <div className="text-center">
@@ -184,3 +235,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+export default SignUp;
