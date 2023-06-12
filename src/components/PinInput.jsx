@@ -36,7 +36,7 @@ function PinInput({ onChangePin }) {
           name="1"
           ref={pinInput.input1}
           type="number"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12 h-16"
         />
       </div>
       <div>
@@ -45,7 +45,7 @@ function PinInput({ onChangePin }) {
           ref={pinInput.input2}
           type="number"
           name="2"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12  h-16"
         />
       </div>
       <div>
@@ -54,7 +54,7 @@ function PinInput({ onChangePin }) {
           ref={pinInput.input3}
           type="number"
           name="3"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12  h-16"
         />
       </div>
       <div>
@@ -63,7 +63,7 @@ function PinInput({ onChangePin }) {
           ref={pinInput.input4}
           type="number"
           name="4"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12  h-16"
         />
       </div>
       <div>
@@ -72,7 +72,7 @@ function PinInput({ onChangePin }) {
           ref={pinInput.input5}
           type="number"
           name="5"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12  h-16"
         />
       </div>
       <div>
@@ -81,7 +81,7 @@ function PinInput({ onChangePin }) {
           ref={pinInput.input6}
           type="number"
           name="6"
-          className="input input-bordered w-12"
+          className="input input-bordered w-12  h-16"
         />
       </div>
     </div>

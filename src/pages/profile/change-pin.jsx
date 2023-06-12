@@ -3,7 +3,6 @@ import React from 'react';
 import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
-import { BiLock } from 'react-icons/bi';
 
 export default function ChangePin() {
   return (

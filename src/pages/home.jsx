@@ -6,7 +6,7 @@ import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
 import Image from 'next/image';
 import default_picture from '../assets/img/default.jpg';
-import cookieConfig from '@/assets/helpers/cookieConfig';
+import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {

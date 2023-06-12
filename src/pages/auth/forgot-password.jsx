@@ -31,10 +31,10 @@ export default function login() {
           </div>
         </div>
       </div>
-      <div className=" flex md:flex-1 md:pl-16 md:pr-[110px]  py-4">
-        <div className=" w-full md:px-0 px-4">
+      <div className=" flex md:flex-1 md:pl-16 md:pr-[110px] md:bg-white bg-[#69BEB9]">
+        <div className=" w-full">
           {/*mobile*/}
-          <div className="md:hidden  w-full h-[150px] bg-[#69BEB9] shadow-4xl flex items-center justify-center">
+          <div className="md:hidden  w-full h-[150px]  shadow-4xl flex items-center justify-center">
             <Link href="/">
               <Image src={logo} className="w-[85px] h-[30px]" alt="picture_logo" />
             </Link>
@@ -43,10 +43,7 @@ export default function login() {
           <Formik initialValues={{ email: '' }} validationSchema={validationSchema}>
             {({ values, errors, touched, handleBlur, handleSubmit, handleChange, isSubmitting }) => {
               return (
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex flex-col gap-3 w-full rounded-xl md:shadow-none shadow-2xl"
-                >
+                <form onSubmit={handleSubmit} className="px-2 py-4 flex flex-col gap-3 w-full rounded-t-2xl bg-white">
                   {/*dekstop*/}
                   <div className="md:flex md:flex-col md:gap-3 hidden md:block">
                     <div className="text-[24px] leading-[33px] font-bold w-full pt-8">
@@ -58,10 +55,10 @@ export default function login() {
                     </div>
                   </div>
                   {/*mobile*/}
-                  <div className="flex flex-col justify-center items-center md:hidden">
-                    <div className="text-[24px]">Login</div>
+                  <div className="flex flex-col gap-4 justify-center items-center md:hidden py-8">
+                    <div className="text-[24px] font-bold">Reset Password</div>
                     <div className="text-center">
-                      Login to your existing account to access all the features in ExonPay.
+                      Enter your FazzPay e-mail so we can send you a password reset link.
                     </div>
                   </div>
                   <div className="relative border-b-2 w-full pt-8">

@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Head from 'next/head';
 
-import cookieConfig from '@/assets/helpers/cookieConfig';
+import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -86,10 +86,10 @@ export default function SignIn() {
             </div>
           </div>
         </div>
-        <div className=" flex md:flex-1 md:pl-16 md:pr-[110px]  py-4">
-          <div className=" w-full md:px-0 px-4">
+        <div className="flex md:flex-1 md:pl-16 md:pr-[110px] md:bg-white md:py-4 bg-[#69BEB9]">
+          <div className=" w-full md:px-0 px-0">
             {/*mobile*/}
-            <div className="md:hidden  w-full h-[150px] bg-[#69BEB9] shadow-4xl flex items-center justify-center">
+            <div className="md:hidden  w-full h-[150px]  bg-[#69BEB9] flex items-center justify-center">
               <Link href="/">
                 <Image src={logo} className="w-[85px] h-[30px]" alt="picture_logo" />
               </Link>
@@ -100,10 +100,10 @@ export default function SignIn() {
                 return (
                   <form
                     onSubmit={handleSubmit}
-                    className="flex flex-col gap-3 w-full rounded-xl md:shadow-none shadow-2xl"
+                    className="flex flex-col px-2 md:gap-3 gap-12 w-full bg-white rounded-t-2xl border-0"
                   >
                     {/*dekstop*/}
-                    <div className="md:flex md:flex-col md:gap-3 hidden md:block">
+                    <div className="md:flex md:flex-col md:gap-3  hidden md:block">
                       <div className="text-[24px] leading-[33px] font-bold w-full pt-8">
                         <div> Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</div>
                       </div>
@@ -120,7 +120,7 @@ export default function SignIn() {
                     </div>
 
                     {/*mobile*/}
-                    <div className="flex flex-col justify-center items-center md:hidden">
+                    <div className="flex flex-col justify-center gap-8 items-center md:hidden">
                       <div className="text-[24px]">Login</div>
                       <div className="text-center">
                         Login to your existing account to access all the features in ExonPay.

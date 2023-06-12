@@ -7,7 +7,7 @@ import picture_home from '../assets/img/picture_home.png';
 import picture_sponsor from '../assets/img/sponsor.png';
 import picture_features from '../assets/img/picture_features.png';
 import { AiOutlinePhone, AiFillLock, AiOutlineDownload, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
-import cookieConfig from '@/assets/helpers/cookieConfig';
+import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
