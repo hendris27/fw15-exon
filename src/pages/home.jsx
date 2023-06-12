@@ -8,6 +8,7 @@ import Image from 'next/image';
 import default_picture from '../assets/img/default.jpg';
 import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
+import Link from 'next/link';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
   const token = req.session?.token;
@@ -35,24 +36,23 @@ export default function Home() {
         <div className="flex-1 rounded-3xl flex flex-col gap-4">
           <div className="bg-[#69BEB9] shadow-2xl flex justify-between h-[180px] rounded-3xl px-8 py-8">
             <div className=" flex flex-col justify-between">
-              <div className="text-[18px] text-[##DFDCDC] ">Balance</div>
+              <div className="text-[18px] text-[#DFDCDC] ">Balance</div>
               <div className="text-[40px] font-bold text-white">Rp120.000</div>
               <div className="text-[14px] text-[##DFDCDC] ">+62 813-9387-7946</div>
             </div>
             <div className="flex flex-col gap-4 justify-between">
               <div className="w-[162px]">
-                <button className="w-full flex gap-4 btn btn-primary rounded-xl normal-case">
-                  <div>
-                    <AiOutlineArrowUp size={25} color="white" />
-                  </div>
-                  <div className="text-white">Transfer</div>
+                <button className="w-full flex gap-4 btn bg-[#57C5B6] rounded-xl normal-case">
+                  <AiOutlineArrowUp size={25} color="white" />
+                  <Link href="/transaction/transfer">
+                    <button className="text-white">Transfer</button>
+                  </Link>
                 </button>
               </div>
               <div className="w-[162px]">
-                <button className="w-full flex gap-4 btn btn-primary rounded-xl normal-case">
+                <button className="w-full flex gap-4 btn bg-[#57C5B6] rounded-xl normal-case">
                   <AiOutlinePlus size={25} color="white" />
-
-                  <div className="text-white">Top Up</div>
+                  <button className="text-white">Top Up</button>
                 </button>
               </div>
             </div>
