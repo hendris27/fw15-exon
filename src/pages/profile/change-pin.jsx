@@ -3,8 +3,16 @@ import React from 'react';
 import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
+import PinInput from '@/components/PinInput';
 
 export default function ChangePin() {
+  // const router = useRouter();
+  // const email = useSelector((state) => state.auth.email);
+  const [pin, setPin] = React.useState('');
+  // const [showAlert, setShowAlert] = React.useState(false);
+  const submitPin = () => {
+    console.log(pin);
+  };
   return (
     <div className="min-h-screen">
       <Headers />
@@ -20,28 +28,12 @@ export default function ChangePin() {
             </div>
             <div className=" flex flex-col gap-12 items-center pt-12 px-4 ">
               <div className="w-[400px] flex flex-col gap-6 ">
-                <div className="flex gap-4 justify-between">
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                  <div>
-                    <input type="number" className="w-12 h-12 text-center border border-gray-300 rounded" />
-                  </div>
-                </div>
+                <PinInput onChangePin={setPin} />
                 <div>
-                  <button className="btn btn-accent w-full normal-case"> Continue</button>
+                  <button onClick={submitPin} className="btn btn-accent w-full normal-case">
+                    {' '}
+                    Continue
+                  </button>
                 </div>
               </div>
             </div>
