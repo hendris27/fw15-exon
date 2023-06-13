@@ -13,16 +13,9 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import axios from 'axios';
 
-export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
-  const token = req.session?.token;
-  if (!token) {
-    res.setHeader('location', 'auth/sign-in');
-    res.statusCode = 302;
-    res.end();
-    return {
-      props: {},
-    };
-  }
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req }) {
+  const token = req.session?.token || null;
+
   return {
     props: {
       token,

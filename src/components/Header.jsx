@@ -5,10 +5,24 @@ import logo from '../assets/img/logo-home.png';
 import Link from 'next/link';
 import { MdNotificationsNone } from 'react-icons/md';
 import { AiOutlineArrowUp, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import http from '@/helpers/http';
+import { setProfile } from '@/redux/reducers/profile';
 
-export default function Header() {
+export default function Header({ token }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.profile.data);
+  const getData = React.useCallback(async () => {
+    const { data } = await http(token).get('/profile');
+    dispatch(setProfile(data.results));
+  }, [token, dispatch]);
+
+  React.useEffect(() => {
+    getData();
+  }, [getData]);
+
   return (
-    <div className="rounded-b-[20px] shadow-2xl flex justify-between px-[100px] py-8 items-center h-24">
+    <div className="rounded-b-[20px] bg-white shadow-2xl flex justify-between px-[100px] py-8 items-center h-24">
       <div className="">
         <Link href="/home">
           <Image src={logo} className="w-[105px] h-[30px]" alt="picture_logo" />
@@ -45,8 +59,8 @@ export default function Header() {
           </ul>
         </div>
         <div className="flex flex-col gap-1">
-          <div>name</div>
-          <div>phone number</div>
+          <div className="text-[22px] font-bold">{user?.username}</div>
+          <div>{user?.email}</div>
         </div>
         <div className="dropdown dropdown-bottom dropdown-end">
           <label tabIndex={0} className="btn m-1 bg-white outline-none border-0 hover:bg-white ">
