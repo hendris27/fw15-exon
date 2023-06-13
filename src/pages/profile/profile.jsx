@@ -25,38 +25,54 @@ export default function Profile() {
     const file = e.target.files[0];
     setSelectedPicture(file);
     fileToDataUrl(file);
+    if (selectedPicture) {
+      form.append('picture', selectedPicture);
+    }
   };
-  if (selectedPicture) {
-    form.append('picture', selectedPicture);
-  }
+
   return (
     <div className="min-h-screen">
       <Headers />
       <div className="flex bg-[#E8F6EF] px-[100px] py-[50px] gap-4 h-full ">
         <Aside />
-        <div className="flex-1 bg-white rounded-3xl flex px-12 py-8">
+        <form className="flex-1 bg-white rounded-3xl flex px-12 py-8">
           <div className="flex flex-col w-full items-center gap-2">
-            <div className="rounded-xl overflow-hidden h-14 w-14 border-[#444cd4]">
-              <div className="w-full h-full border-4 border-dashed flex justify-center items-center rounded-xl">
+            <div className="rounded-xl overflow-hidden h-16 w-16 border-[#444cd4]">
+              <div className="w-16 h-16 border-4 border- flex justify-center items-center rounded-xl">
                 {setSelectedPicture ? (
-                  <Image src={pictureURI} alt="Selected Cover Photo" className="w-full h-full object-cover" />
+                  <Image
+                    src={pictureURI}
+                    alt="picture"
+                    width={500}
+                    height={500}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
+                  <Image
+                    src={default_picture}
+                    className="w-full h-full"
+                    width={500}
+                    height={500}
+                    alt="picture_profile"
+                  />
                 )}
               </div>
             </div>
-            <div className="flex gap-3 items-center">
-              <div>
-                <AiOutlineEdit />
-              </div>
-              <div className="text-[16px] text-accent ">Edit</div>
-              <div className=" rounded-xl">
-                <label className="btn bg-transparent hover:bg-transparent w-full h-full border-0">
-                  <span className="text-black normal-case">Choose profile picture</span>
-                  <input className="hidden " type="file" name="picture" onChange={changePicture} />
-                </label>
-              </div>
+
+            <div className=" rounded-xl">
+              <label className="btn bg-transparent hover:bg-transparent w-full h-full border-0">
+                <span className="text-black normal-case">
+                  <div className="flex gap-3 items-center">
+                    <div>
+                      <AiOutlineEdit />
+                    </div>
+                    <div className="text-[16px] text-accent ">Edit</div>
+                  </div>
+                </span>
+                <input className="hidden " type="file" name="picture" onChange={changePicture} />
+              </label>
             </div>
+
             <div className="flex flex-col justify-center items-center gap-1">
               <div className="font-bold text-[24px] ">Hendri</div>
               <div>+62 813-9387-7946</div>
@@ -91,7 +107,7 @@ export default function Profile() {
               </button>
             </Link>
           </div>
-        </div>
+        </form>
       </div>
       <footer>
         <Footers />
