@@ -9,6 +9,7 @@ const http = (token) => {
     baseURL: 'https://cute-lime-goldfish-toga.cyclic.app',
     headers,
   });
+  return instance;
 };
 
 export default http;
