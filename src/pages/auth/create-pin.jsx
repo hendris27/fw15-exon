@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { SiMoneygram } from 'react-icons/si';
-import { BsCheckCircleFill } from 'react-icons/bs';
-import { MdError } from 'react-icons/md';
+import { MdErrorOutline } from 'react-icons/md';
 
 import Image from 'next/image';
 import logo from '../../assets/img/logo.png';
@@ -19,11 +17,11 @@ function SetPin() {
   const [pin, setPin] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const [successMessage, setSuccessMassage] = React.useState(false);
+  // const [successMessage, setSuccessMassage] = React.useState(false);
 
   React.useEffect(() => {
     if (!email) {
-      router.replace('/auth/create-pin');
+      router.replace('/auth/sign-up');
     }
   }),
     [email, router];
@@ -31,33 +29,27 @@ function SetPin() {
   const setUserPin = async (e) => {
     try {
       e.preventDefault();
-
-      setErrorMessage('');
-      setSuccessMassage('');
       setLoading(true);
-
       const form = new URLSearchParams({
         email,
         pin,
       }).toString();
-
-      const { data } = await http().post('/auth/create-pin', form);
-      console.log(data);
+      console.log(form);
+      const { data } = await http().post('/auth/set-pin', form);
       if (data.success === false) {
-        setErrorMessage('Create pin failed, try again');
         setLoading(false);
+        setErrorMessage(false);
       }
       if (data.success === true) {
-        setSuccessMassage(true);
         setLoading(false);
         setTimeout(() => {
-          router.replace('auth/sign-in');
-        }, 1000);
+          router.replace('/auth/sign-in');
+        }, 2000);
       }
     } catch (error) {
+      console.log(error);
       const message = error?.response?.data.message;
       if (message?.includes('Internal')) {
-        setErrorMessage('Internal Server Error');
       }
     } finally {
       setLoading(false);
@@ -102,11 +94,7 @@ function SetPin() {
               </div>
             </div>
 
-            <form
-              onSubmit={setUserPin}
-              action=""
-              className="px-2 py-8 md:mt-[90px] flex flex-col gap-4 rounded-t-2xl bg-white "
-            >
+            <form onSubmit={setUserPin} className="px-2 py-8 md:mt-[90px] flex flex-col gap-4 rounded-t-2xl bg-white ">
               {/*mobile*/}
               <div className="flex flex-col gap-6 justify-center items-center md:hidden ">
                 <div className="text-[24px] font-bold">Create Security PIN</div>
@@ -114,54 +102,27 @@ function SetPin() {
                   Create a PIN that’s contain 6 digits number for security purpose in ExonPay.
                 </div>
               </div>
-              <div className="flex flex-col gap-10 w-full">
-                {successMessage && <BsCheckCircleFill className="text-success" size={60} />}
-                {successMessage ? (
-                  <h1 className="font-[500] text-primary text-2xl">Your PIN Was Successfully Created</h1>
-                ) : (
-                  <h1 className="font-[500] text-primary text-2xl">
-                    Secure Your Account, Your Wallet, and Your Data With 6 Digits PIN That You Created Yourself.
-                  </h1>
-                )}
-                {successMessage ? (
-                  <p className="text-secondary">
-                    Your PIN was successfully created and you can now access all the features in FazzPay.
-                  </p>
-                ) : (
-                  <p className="text-secondary">
-                    Create 6 digits pin to secure all your money and your data in FazzPay app. Keep it secret and don’t
-                    tell anyone about your FazzPay account password and the PIN.
-                  </p>
-                )}
-              </div>
-              {successMessage === false ? (
-                <div className="w-full flex flex-col gap-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col gap-10 form-control w-full">
-                      {errorMessage && (
-                        <div className="flex flex-row justify-center alert alert-error shadow-lg text-white text-lg">
-                          <MdError size={30} />
-                          {errorMessage}
-                        </div>
-                      )}
-                      <PinInput onChangePin={setPin} />
-                      <label className="label hidden">
-                        <span className="label-text-alt"></span>
-                      </label>
-                    </div>
+
+              <div className="w-full flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <div className="flex flex-col gap-10 form-control w-full">
+                    {errorMessage && (
+                      <div className="flex flex-row justify-center alert alert-error shadow-lg text-white text-lg">
+                        <MdErrorOutline size={30} />
+                        {errorMessage}
+                      </div>
+                    )}
+                    <PinInput onChangePin={setPin} />
                   </div>
                 </div>
-              ) : (
-                <div> </div>
-              )}
+              </div>
+
               {loading ? (
-                <button className={`btn btn-primary normal-case text-white ${successMessage && 'hidden'}`}>
+                <button className="btn btn-primary normal-case text-white">
                   <span className="loading loading-spinner loading-sm"></span>
                 </button>
               ) : (
-                <button className={`btn btn-primary normal-case text-white ${successMessage && 'hidden'}`}>
-                  Create
-                </button>
+                <button className="btn btn-primary normal-case text-white">Create Pin</button>
               )}
             </form>
           </div>
