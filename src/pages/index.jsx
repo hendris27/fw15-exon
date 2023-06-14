@@ -12,6 +12,7 @@ import { withIronSessionSsr } from 'iron-session/next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import axios from 'axios';
+import { RxDashboard } from 'react-icons/rx';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req }) {
   const token = req.session?.token || null;
@@ -53,8 +54,18 @@ export default function Home({ token }) {
                 className="dropdown-content menu p-2 shadow  bg-base-100 rounded-box w-[200px] px-2s flex flex-col items-center justify-between "
               >
                 <li>
+                  <Link href="/dashboard">
+                    <button className="flex gap-8 ">
+                      <div>
+                        <RxDashboard size={25} color="#69BEB9" />
+                      </div>
+                      <div className="font-bold text-[#69BEB9]">Dashboard</div>
+                    </button>
+                  </Link>
+                </li>
+                <li>
                   <Link href="/profile/profile" className="hover:bg-white">
-                    <div className="flex gap-4 hover:bg-white items-center justify-center">
+                    <div className="flex gap-8 hover:bg-white items-center justify-center">
                       <div>
                         <AiOutlineUser size={30} />
                       </div>
@@ -64,7 +75,7 @@ export default function Home({ token }) {
                 </li>
                 <div className="border-b-2 w-full hover:bg-white"></div>
                 <li className="font-bold text-primary">
-                  <button onClick={checkModal} className="hover:bg-white flex gap2 ">
+                  <button onClick={checkModal} className="hover:bg-white flex gap-8 ">
                     <AiOutlineLogout size={25} color="red" />
                     <div className="text-[#ff0000] font-bold hover:text-[16px] ">Logout</div>
                   </button>

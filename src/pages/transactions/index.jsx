@@ -7,6 +7,7 @@ import { withIronSessionSsr } from 'iron-session/next';
 import cookieConfig from '@/helpers/cookieConfig';
 import http from '@/helpers/http';
 import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineUser } from 'react-icons/ai';
+import Link from 'next/link';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
   const token = req.session?.token;
@@ -45,7 +46,7 @@ function SearchRecipient({ userToken }) {
 
   return (
     <Layout token={userToken}>
-      <div className="flex-1 bg-white rounded-3xl flex flex-col gap-4 p-8">
+      <>
         <div className="flex justify-between">
           <div className="font-bold">Search Receiver</div>
         </div>
@@ -61,50 +62,63 @@ function SearchRecipient({ userToken }) {
             />
           </div>
         </div>
-        {recipient.results && (
-          <>
-            {recipient.results.map((item) => (
-              <div className="flex justify-between items-center" key={`trx-list-${item.id}`}>
-                <div className="flex justify-between items-center gap-3">
-                  <>
-                    <div>
-                      {!item.picture && (
-                        <div className="w-14 h-14 bg-white border rounded flex justify-center items-center">
-                          <AiOutlineUser size={35} />
+        <div className="flex flex-col py-8 ">
+          <p>Search for: {search}</p>
+          {recipient.results && (
+            <div className="flex flex-col gap-4">
+              {recipient.results.length === 0 ? (
+                <p className="text-[#ff0000] ">No data found in list.</p>
+              ) : (
+                recipient.results.map((item) => (
+                  <div className="flex flex-1 justify-between items-center" key={`trx-list-${item.id}`}>
+                    <div className="flex justify-between items-center gap-3">
+                      <>
+                        <div>
+                          {!item.picture && (
+                            <div className="w-14 h-14 bg-white border rounded flex justify-center items-center">
+                              <AiOutlineUser size={35} />
+                            </div>
+                          )}
+                          {item.picture && (
+                            <div className="w-14 h-14 bg-black border rounded-xl overflow-hidden">
+                              <Image
+                                className="object-fit"
+                                width={100}
+                                height={100}
+                                src={item.picture}
+                                alt={item.email}
+                              />
+                            </div>
+                          )}
                         </div>
-                      )}
-                      {item.picture && (
-                        <div className="w-14 h-14 bg-black border rounded-xl overflow-hidden">
-                          <Image className="object-fit" width={100} height={100} src={item.picture} alt={item.email} />
+                        <div className="flex flex-col gap-2">
+                          <p className="font-semibold">{item.fullName}</p>
+                          <p className="text-sm text-[#6A6A6A]">{item.email}</p>
                         </div>
-                      )}
+                      </>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-semibold">{item.fullName}</p>
-                      <p className="text-sm text-[#6A6A6A]">{item.email}</p>
-                    </div>
-                  </>
+                  </div>
+                ))
+              )}
+              <div className="flex gap-2  justify-center items-center">
+                <button
+                  onClick={() => getUsers(recipient.pageInfo.page - 1, search)}
+                  disabled={recipient.pageInfo.page <= 1}
+                  className="btn btn-primary"
+                >
+                  <AiOutlineArrowLeft />
+                </button>
+                <div className="font-bold">
+                  page {recipient.pageInfo.page} of {recipient.pageInfo.totalPage}
                 </div>
+                <button onClick={() => getUsers(recipient.pageInfo.page + 1, search)} className="btn btn-primary">
+                  <AiOutlineArrowRight />
+                </button>
               </div>
-            ))}
-          </>
-        )}
-      </div>
-      <div className="flex gap-2 justify-center items-center">
-        <button
-          onClick={() => getUsers(recipient.pageInfo.page - 1, search)}
-          disabled={recipient.pageInfo.page <= 1}
-          className="btn btn-primary"
-        >
-          <AiOutlineArrowLeft />
-        </button>
-        <div className="font-bold">
-          {recipient.pageInfo.page} of {recipient.pageInfo.totalPage}
+            </div>
+          )}
         </div>
-        <button onClick={() => getUsers(recipient.pageInfo.page + 1, search)} className="btn btn-primary">
-          <AiOutlineArrowRight />
-        </button>
-      </div>
+      </>
     </Layout>
   );
 }

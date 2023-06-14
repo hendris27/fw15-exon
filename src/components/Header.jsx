@@ -22,9 +22,9 @@ export default function Header({ token }) {
   }, [getData]);
 
   return (
-    <div className="rounded-b-[20px] bg-white shadow-2xl flex justify-between px-[100px] py-8 items-center h-24">
+    <div className=" md:block hidden rounded-b-[20px] bg-white md:flex shadow-2xl flex md:justify-between px-[100px] py-8 items-center h-24">
       <div className="">
-        <Link href="/home">
+        <Link href="/dashboard">
           <Image src={logo} className="w-[105px] h-[30px]" alt="picture_logo" />
         </Link>
       </div>

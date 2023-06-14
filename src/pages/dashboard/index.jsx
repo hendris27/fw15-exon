@@ -84,37 +84,39 @@ function Dasboard({ userToken }) {
         <div className="bg-white  shadow-2xl flex-1 rounded-3xl flex flex-col gap-4 p-8">
           <div className="flex justify-between">
             <div className="font-bold">Transaction History</div>
-            <Link href="/transactions/history">
+            <Link href="/transactions">
               <div className="font-bold text-accent">See All</div>
             </Link>
           </div>
-          <div className="flex flex-col gap-5">
-            {trx.map((item) => (
-              <div className="flex justify-between items-center" key={`trx-list-${item.id}`}>
-                <div className="flex justify-between items-center gap-3">
-                  {item.type === 'TOP-UP' && (
-                    <>
-                      <div>
-                        {!item.recipient.picture && (
-                          <div className="w-14 h-14 bg-white border rounded flex justify-center items-center">
-                            <AiOutlineUser size={35} />
-                          </div>
-                        )}
-                        {item.recipient.picture && <div className="w-14 h-14 bg-black border rounded" />}
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <p className="font-semibold">{item.recipient.fullName || item.recipient.email}</p>
-                        <p className="text-sm text-[#6A6A6A]">Topup</p>
-                      </div>
-                    </>
-                  )}
+          <Link href="transactions/input-amount">
+            <div className="flex flex-col gap-5">
+              {trx.map((item) => (
+                <div className="flex justify-between items-center" key={`trx-list-${item.id}`}>
+                  <div className="flex justify-between items-center gap-3">
+                    {item.type === 'TOP-UP' && (
+                      <>
+                        <div>
+                          {!item.recipient.picture && (
+                            <div className="w-14 h-14 bg-white border rounded flex justify-center items-center">
+                              <AiOutlineUser size={35} />
+                            </div>
+                          )}
+                          {item.recipient.picture && <div className="w-14 h-14 bg-black border rounded" />}
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <p className="font-semibold">{item.recipient.fullName || item.recipient.email}</p>
+                          <p className="text-sm text-[#6A6A6A]">Topup</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold">Rp.{Number(item.amount).toLocaleString('id')}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold">Rp.{Number(item.amount).toLocaleString('id')}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </Link>
         </div>
       </div>
     </Layout>

@@ -35,11 +35,11 @@ function Layout({ children, token: userToken }) {
     setCheckModal(!modal);
   }
   return (
-    <div className="flex flex-col gap-2 h-min-screen bg-gray-300">
-      <Headers token={userToken} />
+    <div className="flex flex-col gap-2 h-min-screen bg-gray-300 ">
+      <Headers token={userToken} className="" />
       <div className="flex items-center">
-        <div className="w-[400px] flex justify-center items-center h-[calc(theme(height.screen)-theme(height.24))]">
-          <div className="py-8 pl-8 flex flex-col w-[90%] h-[calc(theme(height.screen)-theme(height.40))] bg-white rounded-xl justify-between ">
+        <div className="md:block hidden w-[400px] md:flex md:justify-center items-center h-[calc(theme(height.screen)-theme(height.24))]">
+          <div className="py-8 pl-8 flex flex-col w-[90%]  h-[calc(theme(height.screen)-theme(height.40))] bg-white rounded-xl justify-between ">
             <div className="flex flex-col gap-8">
               <Link href="/home">
                 <div className="flex gap-8 ">
@@ -128,7 +128,7 @@ function Layout({ children, token: userToken }) {
           {children}
         </div>
       </div>
-      <div className="bg-[#69BEB9] h-16 flex justify-between px-[100px] py-[20px] text-white">
+      <div className="md:block hidden bg-[#69BEB9] h-16 flex justify-between px-[100px] py-[20px] text-white">
         <div>2023 Exon. All right reserved.</div>
         <div className="flex gap-4">
           <div>+62 857 1430 4309</div>

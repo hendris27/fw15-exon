@@ -10,20 +10,70 @@ import logo from '../../assets/img/logo.png';
 import bg_login_side from '../../assets/img/bg_login_side.png';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useRouter } from 'next/router';
+import { GoMail } from 'react-icons/go';
+import { RiErrorWarningLine } from 'react-icons/ri';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import http from '@/helpers/http';
 
 export default function ResetPassword() {
   const [open, setOpen] = useState(false);
   const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
+  const [errorMsg, seterrorMsg] = useState('');
+  const [successMsg, setsuccessMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const validationSchema = Yup.object({
-    createnewpassword: Yup.string().required('Create new password is empty !'),
-    confirmnewpassword: Yup.string().required('Confirm new password is empty !'),
+    email: Yup.string().required('Email is required !'),
+    newPassword: Yup.string().required('Create new password is empty !'),
+    confirmPassword: Yup.string().required('Confirm new password is empty !'),
+    confirmPassword: Yup.string()
+      .required('confirm password si empty')
+      .oneOf([Yup.ref('newPassword'), null], 'Password must be match'),
   });
   function showEyeCreatePassword() {
     setOpen(!open);
   }
   function showEyeConfirmPassword() {
     setOpenConfirmPassword(!openConfirmPassword);
+  }
+
+  async function doSubmit(values) {
+    setLoading(true);
+    try {
+      const email = values.email;
+      const newPassword = values.newPassword;
+      const confirmPassword = values.confirmPassword;
+      console.log(email);
+      console.log(newPassword);
+      console.log(confirmPassword);
+      const form = new URLSearchParams({
+        email,
+        newPassword,
+        confirmPassword,
+      }).toString();
+      const { data } = await http().post('/auth/reset-password', form);
+      console.log(data);
+      setLoading(false);
+      if (data) {
+        setsuccessMsg('Password has been set successfully');
+        router.replace('/auth/sign-in');
+      }
+    } catch (err) {
+      const message = err.response?.data?.message;
+      if (message) {
+        seterrorMsg('Error reset password');
+      }
+    }
+    setLoading(false);
+  }
+
+  if (errorMsg || successMsg) {
+    setTimeout(() => {
+      seterrorMsg(false);
+      setsuccessMsg(false);
+    }, 3000);
   }
 
   return (
@@ -53,7 +103,11 @@ export default function ResetPassword() {
             </Link>
           </div>
 
-          <Formik initialValues={{ createnewpassword: '', confirmnewpassword: '' }} validationSchema={validationSchema}>
+          <Formik
+            initialValues={{ email: '', newPassword: '', confirmPassword: '' }}
+            validationSchema={validationSchema}
+            onSubmit={doSubmit}
+          >
             {({ values, errors, touched, handleBlur, handleSubmit, handleChange, isSubmitting }) => {
               return (
                 <form onSubmit={handleSubmit} className="px-2 py-8 flex flex-col gap-4 w-full bg-white rounded-t-2xl">
@@ -66,20 +120,66 @@ export default function ResetPassword() {
                       Transfering money is eassier than ever, you can access Exon wherever you are. Desktop, laptop,
                       mobile phone? we cover all of that for you!
                     </div>
+                    {errorMsg && (
+                      <div className="alert alert-error text-xl text-white text-center">
+                        <RiErrorWarningLine />
+                        {errorMsg}
+                      </div>
+                    )}
+                    {successMsg && (
+                      <div className="alert alert-success text-xl text-white text-center">
+                        <AiOutlineCheckCircle />
+                        {successMsg}
+                      </div>
+                    )}
                   </div>
                   {/*mobile*/}
                   <div className="flex flex-col gap-4 justify-center items-center md:hidden">
                     <div className="text-[24px] font-bold">Reset Password</div>
                     <div className="text-center">Create and confirm your new password so you can login to ExonPay.</div>
+                    {errorMsg && (
+                      <div className="alert alert-error text-xl text-white text-center">
+                        <RiErrorWarningLine />
+                        {errorMsg}
+                      </div>
+                    )}
+                    {successMsg && (
+                      <div className="alert alert-success text-xl text-white text-center">
+                        <AiOutlineCheckCircle />
+                        {successMsg}
+                      </div>
+                    )}
                   </div>
+                  <div className="relative border-b-2 w-full pt-4">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      placeholder="Enter your e-mail"
+                      className={` input w-full  pl-12 border-0 outline-none hover:outline-none hover:border-0 ${
+                        errors.password && touched.password && 'border-error'
+                      }`}
+                    />
+                    <div className="absolute bottom-2 left-2">
+                      <GoMail size={30} />
+                    </div>
+                  </div>
+                  {errors.email && touched.email && (
+                    <label htmlFor="email" className="label p-0">
+                      <span className="label-text-alt font-bold text-md text-error">{errors.email}</span>
+                    </label>
+                  )}
                   <div className="relative border-b-2 w-full flex items-center justify-center">
                     <input
                       type={open ? 'text' : 'password'}
-                      name="createnewpassword"
-                      id="createnewpassword"
+                      name="newPassword"
+                      id="newPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.createnewpassword}
+                      value={values.newPassword}
                       placeholder="Create new password"
                       className="justify-center flex input w-full border-0 pl-12 outline-none hover:outline-none hover:border-0"
                     />
@@ -94,20 +194,20 @@ export default function ResetPassword() {
                       )}
                     </button>
                   </div>
-                  {errors.createnewpassword && touched.createnewpassword && (
-                    <label htmlFor="createnewpassword" className="label p-0">
-                      <span className="label-text-alt font-bold text-md text-error">{errors.createnewpassword}</span>
+                  {errors.newPassword && touched.newPassword && (
+                    <label htmlFor="newPassword" className="label p-0">
+                      <span className="label-text-alt font-bold text-md text-error">{errors.newPassword}</span>
                     </label>
                   )}
 
                   <div className="relative border-b-2 w-full">
                     <input
                       type={openConfirmPassword ? 'text' : 'password'}
-                      name="confirmnewpassword"
-                      id="confirmnewpassword"
+                      name="confirmPassword"
+                      id="confirmPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.confirmnewpassword}
+                      value={values.confirmPassword}
                       placeholder="Confirm new password your"
                       className="input w-full border-0 pl-12 outline-none hover:outline-none hover:border-0"
                     />
@@ -122,13 +222,20 @@ export default function ResetPassword() {
                       )}
                     </button>
                   </div>
-                  {errors.confirmnewpassword && touched.confirmnewpassword && (
-                    <label htmlFor="confirmnewpassword" className="label p-0">
-                      <span className="label-text-alt font-bold text-md text-error">{errors.confirmnewpassword}</span>
+                  {errors.confirmPassword && touched.confirmPassword && (
+                    <label htmlFor="confirmPassword" className="label p-0">
+                      <span className="label-text-alt font-bold text-md text-error">{errors.confirmPassword}</span>
                     </label>
                   )}
                   <div className="w-full mt-12">
-                    <button className="btn  bg-[#69BEB9] w-full normal-case">Reset Password</button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary normal-case max-w-lg w-full text-white shadow-2xl"
+                      // disabled={isSubmitting}
+                    >
+                      {loading && <span className="loading loading-spinner loading-sm"></span>}
+                      {!loading && 'Reset Password'}
+                    </button>
                   </div>
                 </form>
               );

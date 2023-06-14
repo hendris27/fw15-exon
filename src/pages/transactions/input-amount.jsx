@@ -4,9 +4,10 @@ import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
 import { AiOutlineEdit } from 'react-icons/ai';
+import Link from 'next/link';
 
 import Image from 'next/image';
-import default_picture from '../assets/img/default.jpg';
+import default_picture from '../../assets/img/default.jpg';
 
 export default function InputAmount() {
   return (
@@ -48,9 +49,11 @@ export default function InputAmount() {
               </div>
             </div>
           </div>
-          <div className="flex justify-end pt-24">
-            <button className="btn btn-primary normal-case w-[200px] rounded-2xl ">Continue</button>
-          </div>
+          <button className="flex justify-end pt-24">
+            <Link href="/transactions/confirmation">
+              <button className="btn btn-primary normal-case w-[200px] rounded-2xl ">Continue</button>
+            </Link>
+          </button>
         </div>
       </div>
       <footer>
