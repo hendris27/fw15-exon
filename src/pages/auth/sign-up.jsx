@@ -41,8 +41,8 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
 function SignUp() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [loading, setLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const [open, setOpen] = useState(false);
   const validationSchema = Yup.object({
