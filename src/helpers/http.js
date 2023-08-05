@@ -6,7 +6,7 @@ const http = (token) => {
     headers.Authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: 'https://cute-lime-goldfish-toga.cyclic.app',
+    baseURL: 'https://outstanding-train-fawn.cyclic.app',
     headers,
   });
   return instance;
