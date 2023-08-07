@@ -52,7 +52,7 @@ export default function SignIn() {
       password: values.password,
     }).toString();
 
-    const { data } = await axios.post('http://localhost:3000/api/login', form);
+    const { data } = await axios.post('/api/login', form);
     console.log(data.success);
     if (data.success === false) {
       setErrorMessage('email or password is invalid');
@@ -72,7 +72,7 @@ export default function SignIn() {
         <title>ExonPay | sign-in</title>
       </Head>
       <div className="md:flex h-min-screen">
-        <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex md:flex-col px-12 py-8">
+        <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex-col px-12 py-8">
           <Link href="/">
             <Image src={logo} className="w-[85px] h-[20px]" alt="picture_logo" />
           </Link>
@@ -103,7 +103,7 @@ export default function SignIn() {
                     className="flex flex-col px-2 md:gap-3 gap-12 w-full bg-white rounded-t-2xl border-0"
                   >
                     {/*dekstop*/}
-                    <div className="md:flex md:flex-col md:gap-3  hidden md:block">
+                    <div className="md:flex-col md:gap-3  hidden md:block">
                       <div className="text-[24px] leading-[33px] font-bold w-full pt-8">
                         <div> Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</div>
                       </div>

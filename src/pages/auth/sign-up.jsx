@@ -61,7 +61,7 @@ function SignUp() {
         password: values.password,
       }).toString();
 
-      const { data } = await axios.post('http://localhost:3000/api/sign-up', form);
+      const { data } = await axios.post('/api/sign-up', form);
       console.log(data);
 
       if (data.success === true) {
@@ -82,7 +82,7 @@ function SignUp() {
   }
   return (
     <div className="md:flex h-min-screen">
-      <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex md:flex-col px-12 py-8">
+      <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden  md:flex-col px-12 py-8">
         <div className="">
           <Link href="/">
             <Image src={logo} className="w-[85px] h-[20px]" alt="picture_logo" />
@@ -120,7 +120,7 @@ function SignUp() {
               return (
                 <form onSubmit={handleSubmit} className="px-2 flex flex-col gap-4 w-full rounded-t-2xl bg-white">
                   {/*dekstop*/}
-                  <div className="md:flex md:flex-col md:gap-3 hidden md:block">
+                  <div className="md:flex-col md:gap-3 hidden md:block">
                     <div className="text-[24px] leading-[33px] font-bold w-full pt-8">
                       <div> Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</div>
                     </div>
@@ -157,7 +157,7 @@ function SignUp() {
                   </div>
                   {errors.username && touched.username && (
                     <label htmlFor="username" className="label pl-4">
-                      <span className="label-text-alt font-bold text-md text-error">{errors.firstname}</span>
+                      <span className="label-text-alt font-bold text-md text-error">{errors.username}</span>
                     </label>
                   )}
 
@@ -218,7 +218,7 @@ function SignUp() {
                     </button>
                   )}
 
-                  <div className="flex pt-4 flex justify-center text-center">
+                  <div className="pt-4 flex justify-center text-center">
                     <div className="text-center">
                       Already have an account?
                       <Link className="font-bold" href="/auth/sign-in">
