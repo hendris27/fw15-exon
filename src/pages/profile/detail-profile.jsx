@@ -4,11 +4,29 @@ import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
 import Link from 'next/link';
+import { withIronSessionSsr } from 'iron-session/next';
+import checkCredentials from '@/helpers/checkCredentials';
+import cookieConfig from '@/helpers/cookieConfig';
+import http from '@/helpers/http';
 
-export default function DetailProfile() {
+export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
+  const token = req.session?.token;
+  checkCredentials(token, res, '/auth/sign-in');
+
+  const { data } = await http(token).get('/profile');
+
+  return {
+    props: {
+      token,
+      user: data.results,
+    },
+  };
+}, cookieConfig);
+
+export default function DetailProfile({ token, user }) {
   return (
     <div className="min-h-screen">
-      <Headers />
+      <Headers token={token} user={user} />
       <div className="flex bg-[#E8F6EF] px-[100px] py-[50px] gap-4 h-full ">
         <Aside />
         <div className="flex-1 bg-white rounded-3xl flex p-8">
@@ -20,27 +38,29 @@ export default function DetailProfile() {
                 information, contact our support.
               </div>
             </div>
-            <div className="flex bg-white shadow-xl rounded-xl p-6 ">
+
+            <div className="flex bg-white shadow-xl rounded-xl p-6  shadow-gray-700/20 ">
               <div className="w-full flex  items-center gap-4 ">
                 <div className="flex flex-col ">
-                  <div className="text-[16px] font-bold ">First Name</div>
-                  <div className="text-[22px] font-bold">Hendri</div>
+                  <div className="text-[16px] font-bold ">Username</div>
+                  <div className="text-[22px] font-bold">{user?.username}</div>
                 </div>
               </div>
             </div>
-            <div className="flex bg-white shadow-xl rounded-xl p-6 ">
+
+            <div className="flex bg-white shadow-xl rounded-xl p-6  shadow-gray-700/20">
               <div className="w-full flex  items-center gap-4 ">
-                <div className="flex flex-col ">
-                  <div className="text-[16px] font-bold ">Last Name</div>
-                  <div className="text-[22px] font-bold">Setiadi</div>
+                <div className="flex flex-col font-bold ">
+                  {!user.fullName && <div className="opacity-40 text-md">No set</div>}
+                  {user?.fullName && <div>{user?.fullName}</div>}
                 </div>
               </div>
             </div>
-            <div className="flex bg-white shadow-xl rounded-xl p-6 ">
+            <div className="flex bg-white shadow-xl rounded-xl p-6  shadow-gray-700/20 ">
               <div className="w-full flex  items-center gap-4 ">
                 <div className="flex flex-col ">
-                  <div className="text-[16px] font-bold ">First Name</div>
-                  <div className="text-[22px] font-bold">pewdiepie1@gmail.com</div>
+                  <div className="text-[16px] font-bold ">Verified E-mail</div>
+                  <div className="text-[22px] font-bold">{user?.email}@gmail</div>
                 </div>
               </div>
             </div>
