@@ -43,13 +43,14 @@ function SetPin() {
       if (data.success === true) {
         setLoading(false);
         setTimeout(() => {
-          router.replace('/auth/sign-in');
+          router.push('/');
         }, 2000);
       }
     } catch (error) {
       console.log(error);
       const message = error?.response?.data.message;
       if (message?.includes('Internal')) {
+        setErrorMessage('Internal Server Error');
       }
     } finally {
       setLoading(false);
