@@ -79,7 +79,7 @@ function Dasboard({ userToken }) {
           </div>
         </div>
         <div className="h-[100%] flex gap-4">
-          <div className="bg-white shadow-2xl w-[55%] rounded-3xl flex flex-col px-8 pt-8">
+          <div className="bg-white shadow-2xl flex-1 rounded-3xl flex flex-col px-8 pt-8">
             <div className="flex justify-between">
               <div className="flex flex-col gap-2">
                 <div>
@@ -100,7 +100,7 @@ function Dasboard({ userToken }) {
               <Image src={graphic} alt="picture_graphic" />
             </div>
           </div>
-          <div className="shadow-2xl  rounded-3xl flex flex-col gap-4 p-8">
+          <div className="shadow-2xl  rounded-3xl flex flex-col gap-4 p-8 w-[45%] ">
             <div className="flex justify-between">
               <div className="font-bold">Transaction History</div>
               <Link href="/transactions/history">

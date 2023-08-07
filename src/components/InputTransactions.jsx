@@ -94,7 +94,7 @@ const InputTransactionTopup = (props) => {
                       placeholder="Enter your amount min Rp. 10.000"
                       className={`border-b-2 outline-none h-12 px-8 rounded-xl ${
                         errors.amount && touched.amount && 'border-error'
-                      } w-full font-[500] text-secondary text-xl`}
+                      } w-full font-[500] text-black text-xl`}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.amount}

@@ -25,7 +25,7 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
   const token = req.session?.token;
 
   if (token) {
-    res.setHeader('location', '/auth/login');
+    res.setHeader('location', '/auth/sign-in');
     res.statusCode = 302;
     res.end();
     return { prop: { token } };
