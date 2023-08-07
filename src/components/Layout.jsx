@@ -41,7 +41,7 @@ function Layout({ children, token: userToken }) {
         <div className="md:block hidden w-[400px] md:flex md:justify-center items-center h-[calc(theme(height.screen)-theme(height.24))]">
           <div className="py-8 pl-8 flex flex-col w-[90%]  h-[calc(theme(height.screen)-theme(height.40))] bg-white rounded-xl justify-between ">
             <div className="flex flex-col gap-8">
-              <Link href="/home">
+              <Link href="/dashboard">
                 <div className="flex gap-8 ">
                   <div>
                     <AiOutlineDashboard size={25} color="#69BEB9" />

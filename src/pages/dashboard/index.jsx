@@ -103,7 +103,7 @@ function Dasboard({ userToken }) {
           <div className="shadow-2xl  rounded-3xl flex flex-col gap-4 p-8">
             <div className="flex justify-between">
               <div className="font-bold">Transaction History</div>
-              <Link href="/transactions">
+              <Link href="/transactions/history">
                 <div className="font-bold text-accent">See All</div>
               </Link>
             </div>

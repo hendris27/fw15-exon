@@ -5,29 +5,55 @@ import Headers from '@/components/Header';
 import Footers from '@/components/Footers';
 import Aside from '@/components/Aside';
 import Image from 'next/image';
+import { FiUser } from 'react-icons/fi';
 import default_picture from '../assets/img/default.jpg';
 import cookieConfig from '@/helpers/cookieConfig';
 import { withIronSessionSsr } from 'iron-session/next';
 import Link from 'next/link';
+import checkCredentials from '@/helpers/checkCredentials';
+import { useRouter } from 'next/router';
+import http from '@/helpers/http';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
   const token = req.session?.token;
-  if (!token) {
-    res.setHeader('location', 'auth/sign-in');
-    res.statusCode = 302;
-    res.end();
-    return {
-      props: {},
-    };
-  }
+  checkCredentials(token, res, '/auth/sign-in');
+
+  const { data } = await http(token).get('/profile');
+  console.log(data);
+
   return {
     props: {
       token,
+      user: data.results,
     },
   };
 }, cookieConfig);
 
-export default function Home() {
+function Dashboard({ token, user }) {
+  const router = useRouter();
+  const [trx, setTrx] = React.useState([]);
+  const getTransactions = React.useCallback(async () => {
+    const { data } = await http(token).get('/transactions', { params: { limit: 2 } });
+    setTrx(data.results);
+  }, [token]);
+
+  React.useEffect(() => {
+    getTransactions();
+  }, [getTransactions]);
+
+  const topUp = async (event) => {
+    event.preventDefault();
+    try {
+      const { value: amount } = event.target.elements.amount;
+      const form = new URLSearchParams({ amount });
+      const { data } = await http(token).post('/transactions/topup', form.toString());
+      console.log(data);
+      router.reload('/home');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="h-screen">
       <Headers />
@@ -37,8 +63,10 @@ export default function Home() {
           <div className="bg-[#69BEB9] shadow-2xl flex justify-between h-[180px] rounded-3xl px-8 py-8">
             <div className=" flex flex-col justify-between">
               <div className="text-[18px] text-[#DFDCDC] ">Balance</div>
-              <div className="text-[40px] font-bold text-white">Rp120.000</div>
-              <div className="text-[14px] text-[##DFDCDC] ">+62 813-9387-7946</div>
+              <div className="text-[40px] font-bold text-white">
+                {user?.balance ? `Rp ${Number(user?.balance).toLocaleString('id')}` : `Rp-0`}
+              </div>
+              <div className="text-[14px] text-[##DFDCDC] ">{user?.email}</div>
             </div>
             <div className="flex flex-col gap-4 justify-between">
               <div className="w-[162px]">
@@ -81,18 +109,106 @@ export default function Home() {
                 <div className="font-bold">Transaction History</div>
                 <button className="font-bold text-accent">See All</button>
               </div>
-              <div className="flex justify-between items-center ">
-                <div className="flex justify-center items-center gap-2">
-                  <div className="rounded-xl overflow-hidden h-14 w-14 border-[#444cd4]">
-                    <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
+
+              {trx.map((item) => (
+                <div key={`trx-list-${item.id}`} className="flex justify-between px-7 py-6">
+                  <div className="flex gap-2">
+                    {item.type === 'TRANSFER' && (
+                      <>
+                        {item.recipient.id !== user.id && (
+                          <>
+                            <div>
+                              {!item.recipient.picture && (
+                                <div className="w-12 h-12 border rounded-lg flex justify-center items-center">
+                                  <FiUser size={30} />
+                                </div>
+                              )}
+                              {item.recipient.picture && (
+                                <div className="w-12 h-12 border rounded-lg overflow-hidden">
+                                  <Image
+                                    className="rounded object-fit "
+                                    src={item.recipient.picture}
+                                    alt={item.recipient.fullName || item.recipient.email}
+                                    width={100}
+                                    height={100}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <div className="font-semibold">{item.recipient.fullName || item.recipient.email}</div>
+                              <div className="text-sm opacity-70">Outcome</div>
+                            </div>
+                          </>
+                        )}
+                        {item.recipient.id === user.id && (
+                          <>
+                            <div>
+                              {!item.sender.picture && (
+                                <div className="w-12 h-12 border rounded-lg flex justify-center items-center">
+                                  <FiUser size={30} />
+                                </div>
+                              )}
+                              {item.sender.picture && (
+                                <div className="w-12 h-12 border rounded-lg overflow-hidden">
+                                  <Image
+                                    className="rounded object-fit "
+                                    src={item.sender.picture}
+                                    alt={item.sender.fullName || item.sender.email}
+                                    width={100}
+                                    height={100}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <div className="font-semibold">{item.sender.fullName || item.sender.email}</div>
+                              <div className="text-sm opacity-70">Outcome</div>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    )}
+                    {item.type === 'TOP-UP' && (
+                      <>
+                        <div>
+                          {!item.picture && (
+                            <div className="w-12 h-12 border rounded-lg flex justify-center items-center">
+                              <FiUser size={30} />
+                            </div>
+                          )}
+                          {item.picture && (
+                            <div className="w-12 h-12 border rounded-lg overflow-hidden">
+                              <Image
+                                className="rounded object-fit "
+                                src={item.picture}
+                                alt={item.fullName || item.email}
+                                width={100}
+                                height={100}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="font-semibold">{item.recipient.fullName || item.recipient.email}</div>
+                          <div className="text-sm opacity-70">Income</div>
+                        </div>
+                      </>
+                    )}
                   </div>
-                  <div className="flex flex-col">
-                    <div className="text-[16px] font-bold ">Samuel Suhi</div>
-                    <div className="text-[14px]">Accept</div>
+                  <div>
+                    {item.type === 'TOP-UP' && (
+                      <div className="font-semibold text-green-500">Rp{Number(item.amount).toLocaleString('id')}</div>
+                    )}
+                    {item.type === 'TRANSFER' &&
+                      (item.recipient.id === user.id ? (
+                        <div className="text-green-500">Rp{Number(item.amount).toLocaleString('id')}</div>
+                      ) : (
+                        <div className="text-red-500">Rp{Number(item.amount).toLocaleString('id')}</div>
+                      ))}
                   </div>
                 </div>
-                <div className="font-bold text-accent">+Rp50.000</div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -103,3 +219,4 @@ export default function Home() {
     </div>
   );
 }
+export default Dashboard;
