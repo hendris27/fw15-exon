@@ -2,7 +2,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import cookieConfig from '@/helpers/cookieConfig';
 
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
-  const request = await fetch('https://outstanding-train-fawn.cyclic.app/auth/login', {
+  const request = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/auth/login', {
     method: 'POST',
     body: new URLSearchParams(req.body).toString(),
     headers: {
