@@ -58,12 +58,12 @@ function Dasboard({ userToken }) {
           </div>
           <div className="flex flex-col gap-4 justify-between">
             <div className="w-[162px]">
-              <div className="w-full flex gap-4 btn bg-[#57C5B6] rounded-xl normal-case">
-                <AiOutlineArrowUp size={25} color="white" />
-                <Link href="/transaction/transfer">
+              <Link href="/transactions/search-receiver">
+                <div className="w-full flex gap-4 btn bg-[#57C5B6] rounded-xl normal-case">
+                  <AiOutlineArrowUp size={25} color="white" />
                   <div className="text-white">Transfer</div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
             <button
               onClick={() => {
