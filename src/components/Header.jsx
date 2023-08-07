@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import default_picture from '../assets/img/default.jpg';
+import profilePict from '../assets/img/default.jpg';
 import logo from '../assets/img/logo-home.png';
 import Link from 'next/link';
 import { MdNotificationsNone } from 'react-icons/md';
@@ -8,21 +8,30 @@ import { AiOutlineArrowUp, AiOutlineUser, AiOutlineLogout } from 'react-icons/ai
 import { useDispatch, useSelector } from 'react-redux';
 import http from '@/helpers/http';
 import { setProfile } from '@/redux/reducers/profile';
+import { useRouter } from 'next/router';
 
-export default function Header({ token }) {
+function Header({ token }) {
+  const profile = useSelector((state) => state.profile.data);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.profile.data);
-  const getData = React.useCallback(async () => {
-    const { data } = await http(token).get('/profile');
-    dispatch(setProfile(data.results));
+  const router = useRouter();
+
+  const getProfile = React.useCallback(async () => {
+    try {
+      const { data } = await http(token).get('/profile');
+      console.log(data.results);
+      dispatch(setProfile(data.results));
+    } catch (error) {
+      const message = error?.response?.data?.message;
+      return console.log(message);
+    }
   }, [token, dispatch]);
 
   React.useEffect(() => {
-    getData();
-  }, [getData]);
+    getProfile();
+  }, [getProfile]);
 
   return (
-    <div className=" md:block hidden rounded-b-[20px] bg-white md:flex shadow-2xl flex md:justify-between px-[100px] py-8 items-center h-24">
+    <div className=" md:block hidden rounded-b-[20px] bg-white md:flex shadow-2xl shadow-gray-700/50 flex md:justify-between px-[100px] py-8 items-center h-24">
       <div className="">
         <Link href="/dashboard">
           <Image src={logo} className="w-[105px] h-[30px]" alt="picture_logo" />
@@ -31,8 +40,39 @@ export default function Header({ token }) {
       <div className="flex gap-4 items-center">
         <div className="dropdown dropdown-bottom dropdown-end">
           <label tabIndex={0} className="btn m-1 bg-white outline-none border-0 hover:bg-white ">
-            <div className="rounded-xl overflow-hidden h-14 w-14 border-4 border-[#444cd4]">
-              <Image src={default_picture} className="w-full h-full" alt="picture_logo" />
+            <div className="rounded-full overflow-hidden h-14 w-14 border-4 border-accent">
+              {token ? (
+                <div className="hidden lg:flex justify-center items-center gap-3">
+                  <div className="w-16 h-16 overflow-hidden object-cover rounded-2xl">
+                    {profile?.picture ? (
+                      <Image
+                        width={150}
+                        height={150}
+                        className="object-cover w-full h-full"
+                        src={profile?.picture}
+                        alt="userImage"
+                      />
+                    ) : (
+                      <Image width={160} height={160} className="object-cover" src={profilePict} alt="user" />
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="hidden md:flex items-center gap-8">
+                  <Link
+                    href="/auth/login"
+                    className="btn btn-ghost w-28 text-base font-semibold capitalize text-primary border-primary rounded-xl"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="btn btn-primary w-28 text-base font-semibold capitalize text-white rounded-xl"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </div>
           </label>
           <ul
@@ -59,8 +99,8 @@ export default function Header({ token }) {
           </ul>
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-[22px] font-bold">{user?.username}</div>
-          <div>{user?.email}</div>
+          <div className="text-[22px] font-bold">{profile?.username}</div>
+          <div>{profile?.email}</div>
         </div>
         <div className="dropdown dropdown-bottom dropdown-end">
           <label tabIndex={0} className="btn m-1 bg-white outline-none border-0 hover:bg-white ">
@@ -104,3 +144,5 @@ export default function Header({ token }) {
     </div>
   );
 }
+
+export default Header;
