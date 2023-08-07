@@ -25,7 +25,7 @@ function SearchRecipient({ userToken }) {
   const [recipient, setRecepient] = React.useState([]);
   const getUsers = React.useCallback(
     async (page = 1, search = '') => {
-      const { data } = await http(userToken).get('/users', {
+      const { data } = await http(userToken).get('/users?limit=3', {
         params: {
           page,
           search,
@@ -45,7 +45,7 @@ function SearchRecipient({ userToken }) {
   }, [search, getUsers]);
 
   return (
-    <Layout token={userToken}>
+    <Layout token={userToken} user={user}>
       <>
         <div className="flex justify-between">
           <div className="font-bold">Search Receiver</div>
