@@ -55,7 +55,7 @@ function ForgotPassword() {
 
   return (
     <div className="md:flex h-m-screen">
-      <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex md:flex-col px-12 py-8">
+      <div className="bg-login w-[60%] bg-cover bg-no-repeat md:block hidden md:flex-col px-12 py-8">
         <div className="">
           <Link href="/">
             <Image src={logo} className="w-[85px] h-[20px]" alt="picture_logo" />
@@ -85,7 +85,7 @@ function ForgotPassword() {
               return (
                 <form onSubmit={handleSubmit} className="px-2 py-4 flex flex-col gap-3 w-full rounded-t-2xl bg-white">
                   {/*dekstop*/}
-                  <div className="md:flex md:flex-col md:gap-3 hidden md:block">
+                  <div className="md:flex-col md:gap-3 hidden md:block">
                     <div className="text-[24px] leading-[33px] font-bold w-full pt-8">
                       <div> Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</div>
                     </div>
