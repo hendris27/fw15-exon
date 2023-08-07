@@ -39,13 +39,11 @@ export default function Aside() {
   return (
     <div className="max-h-full bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
       <div className="flex flex-col gap-8">
-        <Link href="/home">
-          <button className="flex gap-8 ">
-            <div>
-              <RxDashboard size={25} color="#69BEB9" />
-            </div>
-            <div className="font-bold text-[#69BEB9]">Dashboard</div>
-          </button>
+        <Link href="/dashboard">
+          <div className="flex gap-8 ">
+            <RxDashboard size={25} color="#69BEB9" />
+          </div>
+          <div className="font-bold text-[#69BEB9]">Dashboard</div>
         </Link>
         <Link href="/transaction/transfer">
           <button className="flex gap-8 ">
