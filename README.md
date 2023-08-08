@@ -2,8 +2,8 @@
 # Exon Pay
 ![Logo Exon Pay](https://github.com/hendris27/fw15-exon/blob/main/src/assets/img/logo-home.png)
 ![](https://github.com/hendris27/fw15-exon/blob/main/src/assets/img/ss%20image/dashborad.png)
-![](https://github.com/hendris27/fw15-exon/blob/main/src/assets/img/ss%20image/profile.png)
-![](hthttps://github.com/hendris27/fw15-exon/blob/main/src/assets/img/ss%20image/search-receiver.png)
+![](https://github.com/hendris27/fw15-exon/blob/main/src/assets/img/ss%20image/search-receiver.png)
+![](hhttps://github.com/hendris27/fw15-exon/blob/main/src/assets/img/ss%20image/transfer-succes.png)
 
 
 #About The Project
