@@ -59,7 +59,7 @@ export default function SignIn() {
       setLoad(false);
     }
     if (data.success === true) {
-      router.push('/');
+      router.push('/dashboard');
       setLoad(false);
     }
   };
