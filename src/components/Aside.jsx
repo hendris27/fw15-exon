@@ -59,7 +59,7 @@ export default function Aside({ token }) {
             <div className="font-bold text-[#69BEB9]">Dashboard</div>
           </div>
         </Link>
-        <Link href="/transaction/search-receiver">
+        <Link href="/transactions/search-receiver">
           <button className="flex gap-8 ">
             <div>
               <AiOutlineArrowUp size={25} color="#69BEB9" />
