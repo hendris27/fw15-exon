@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import profilePict from '../assets/img/default.jpg';
 import logo from '../assets/img/logo-home.png';
@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import http from '@/helpers/http';
 import { setProfile } from '@/redux/reducers/profile';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 function Header({ token }) {
   const profile = useSelector((state) => state.profile.data);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [modal, setCheckModal] = useState(false);
 
   const getProfile = React.useCallback(async () => {
     try {
@@ -30,6 +32,13 @@ function Header({ token }) {
     getProfile();
   }, [getProfile]);
 
+  const doLogout = async () => {
+    await axios.get('/api/logout');
+    router.replace('/auth/sign-in');
+  };
+  function checkModal() {
+    setCheckModal(!modal);
+  }
   return (
     <div className=" md:block hidden rounded-b-[20px] bg-white md:flex shadow-2xl shadow-gray-700/50 flex md:justify-between px-[100px] py-8 items-center h-24">
       <div className="">
@@ -91,12 +100,27 @@ function Header({ token }) {
             </li>
             <div className="border-b-2 w-full hover:bg-white"></div>
             <li className="font-bold text-primary">
-              <div className="hover:bg-white flex gap2 ">
+              <div onClick={checkModal} className="hover:bg-white flex gap2 ">
                 <AiOutlineLogout size={25} color="red" />
                 <div className="text-[#ff0000] font-bold hover:text-[16px] ">Logout</div>
               </div>
             </li>
           </ul>
+          <input type="checkbox" id="my_modal_6" className="modal-toggle" checked={modal} />
+          <div className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Attention !</h3>
+              <p className="py-4">Are you sure to Logout?</p>
+              <div className="modal-action">
+                <button onClick={doLogout} className="btn btn-error text-white normal-case">
+                  Yes
+                </button>
+                <button onClick={checkModal} className="btn btn-success text-white normal-case">
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-[22px] font-bold">{profile?.username}</div>
