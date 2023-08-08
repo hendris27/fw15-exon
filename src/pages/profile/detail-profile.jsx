@@ -60,7 +60,7 @@ export default function DetailProfile({ token, user }) {
               <div className="w-full flex  items-center gap-4 ">
                 <div className="flex flex-col ">
                   <div className="text-[16px] font-bold ">Verified E-mail</div>
-                  <div className="text-[22px] font-bold">{user?.email}@gmail</div>
+                  <div className="text-[22px] font-bold">{user?.email}</div>
                 </div>
               </div>
             </div>
