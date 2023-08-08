@@ -89,7 +89,7 @@ function Profile({ token, user }) {
     <div className="min-h-screen">
       <Headers token={token} user={user} />
       <div className="flex bg-[#E8F6EF] px-[100px] py-[50px] gap-4 h-full w-full ">
-        <Aside />
+        <Aside token={token} user={user} />
         <form className="flex-1 bg-white rounded-3xl flex px-12 py-8 w-full">
           <div className=" p-7 lg:p-16 flex flex-col  justify-center gap-9">
             <div className="flex flex-col gap-1 justify-center items-center">
