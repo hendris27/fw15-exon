@@ -49,7 +49,7 @@ function Layout({ children, token: userToken }) {
                   <div className="font-bold text-[#69BEB9]">Dashboard</div>
                 </div>
               </Link>
-              <Link href="/transaction/transfer">
+              <Link href="/transactions/transfer">
                 <div className="flex gap-8 ">
                   <div>
                     <AiOutlineArrowUp size={25} color="#69BEB9" />
