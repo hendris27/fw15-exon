@@ -7,11 +7,12 @@ import { withIronSessionSsr } from 'iron-session/next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import InputTransactions from '@/components/InputTransactions';
 
 export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req, res }) {
   const token = req.session?.token;
   if (!token) {
-    res.setHeader('location', 'auth/login');
+    res.setHeader('location', 'auth/sign-in');
     res.statusCode = 302;
     res.end();
     return {
@@ -25,9 +26,11 @@ export const getServerSideProps = withIronSessionSsr(async function getServerSid
   };
 }, cookieConfig);
 
-export default function Aside() {
-  const [modal, setCheckModal] = useState(false);
+export default function Aside({ token }) {
+  const [modalOpen, setModalOpen] = React.useState(false);
   const router = useRouter();
+  const [modal, setCheckModal] = useState(false);
+
   const doLogout = async () => {
     await axios.get('/api/logout');
     router.replace('/auth/sign-in');
@@ -35,17 +38,28 @@ export default function Aside() {
   function checkModal() {
     setCheckModal(!modal);
   }
-
+  const openModal = () => {
+    if (modalOpen === true) {
+      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(true);
+      }, 200);
+    } else {
+      setModalOpen(true);
+    }
+  };
   return (
     <div className="max-h-full bg-white shadow-2xl w-[30%] py-8 px-6 rounded-3xl flex flex-col  justify-between ">
       <div className="flex flex-col gap-8">
         <Link href="/dashboard">
           <div className="flex gap-8 ">
-            <RxDashboard size={25} color="#69BEB9" />
+            <div>
+              <RxDashboard size={25} color="#69BEB9" />
+            </div>
+            <div className="font-bold text-[#69BEB9]">Dashboard</div>
           </div>
-          <div className="font-bold text-[#69BEB9]">Dashboard</div>
         </Link>
-        <Link href="/transaction/transfer">
+        <Link href="/transaction/search-receiver">
           <button className="flex gap-8 ">
             <div>
               <AiOutlineArrowUp size={25} color="#69BEB9" />
@@ -61,7 +75,9 @@ export default function Aside() {
             {/* Open the modal using ID.showModal() method */}
             <button
               className="btn bg-transparent outline-none border-0 ml-[-16px] hover:bg-transparent hover:outline-none"
-              onClick={() => window.my_modal_5.showModal()}
+              onClick={() => {
+                openModal();
+              }}
             >
               <div className='className="font-bold text-[#69BEB9] normal-case text-[16px]"'>Top Up</div>
             </button>
@@ -118,6 +134,7 @@ export default function Aside() {
           </div>
         </div>
       </div>
+      {modalOpen && <InputTransactions visibleModal={modalOpen} token={token} />}
     </div>
   );
 }
