@@ -60,27 +60,27 @@ export default function Aside({ token }) {
           </div>
         </Link>
         <Link href="/transactions/search-receiver">
-          <button className="flex gap-8 ">
+          <div className="flex gap-8 ">
             <div>
               <AiOutlineArrowUp size={25} color="#69BEB9" />
             </div>
             <div className="font-bold text-[#69BEB9]">Transfer</div>
-          </button>
+          </div>
         </Link>
-        <button className="flex gap-8 items-center ">
+        <div className="flex gap-8 items-center ">
           <div>
             <AiOutlinePlus size={25} color="#69BEB9" />
           </div>
           <div>
             {/* Open the modal using ID.showModal() method */}
-            <button
+            <div
               className="btn bg-transparent outline-none border-0 ml-[-16px] hover:bg-transparent hover:outline-none"
               onClick={() => {
                 openModal();
               }}
             >
               <div className='className="font-bold text-[#69BEB9] normal-case text-[16px]"'>Top Up</div>
-            </button>
+            </div>
             <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
               <form method="dialog" className="modal-box flex flex-col justify-starts">
                 <h3 className="font-bold text-lg">Top Up</h3>
@@ -101,7 +101,7 @@ export default function Aside({ token }) {
               </form>
             </dialog>
           </div>
-        </button>
+        </div>
 
         <Link href="/profile/profile">
           <button className="flex gap-8 ">
