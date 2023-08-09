@@ -29,7 +29,7 @@ function PinInput({ onChangePin }) {
     onChangePin(pin.join(''));
   };
   return (
-    <div className="flex gap-0 justify-between">
+    <div className="flex gap-2 justify-between">
       <div>
         <input
           onChange={changeValue}
