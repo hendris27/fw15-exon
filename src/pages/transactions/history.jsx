@@ -26,9 +26,26 @@ function SearchHistory({ userToken }) {
   const [filterValue, setFilterValue] = React.useState('all'); // Default filter value
   const [history, setHistory] = React.useState([]);
   const user = useSelector((state) => state.profile.data);
+  const [sortOrder, setSortOrder] = React.useState('asc'); // State to keep track of sorting order
+
+  const toggleSortOrder = () => {
+    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(newSortOrder);
+
+    const sorted = [...history.results].sort((a, b) => {
+      const fullNameA = (a.recipient?.fullName || '').toLowerCase();
+      const fullNameB = (b.recipient?.fullName || '').toLowerCase();
+
+      return newSortOrder === 'asc' ? fullNameA.localeCompare(fullNameB) : fullNameB.localeCompare(fullNameA);
+    });
+
+    setHistory({ ...history, results: sorted });
+
+    getTransaction(1, search, filterValue, 'all', 'recipient.fullName', newSortOrder);
+  };
 
   const getTransaction = React.useCallback(
-    async (page = 1, searchTerm = '', filter = 'all', type = 'all') => {
+    async (page = 1, searchTerm = '', filter = 'all', type = 'all', sortField = 'createdAt', sort = 'asc') => {
       try {
         const { data } = await http(userToken).get('/transactions?limit=5', {
           params: {
@@ -36,6 +53,8 @@ function SearchHistory({ userToken }) {
             search: searchTerm,
             filter,
             type,
+            sortField,
+            sort,
           },
         });
         setHistory(data);
@@ -81,36 +100,12 @@ function SearchHistory({ userToken }) {
       </div>
       <div className="flex flex-col py-8 ">
         <div className="flex justify-between font-bold">Search for: {search}</div>
-        <div className="flex gap-2 justify-center items-center">
-          {history.pageInfo.page === 1 && (
-            <div>
-              <button
-                onClick={() => handleFilterChange('all')}
-                className={`btn ${filterValue === 'all' ? 'btn-primary' : ''}`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => handleFilterChange('outcome')}
-                className={`btn ${filterValue === 'outcome' ? 'btn-primary' : ''}`}
-              >
-                Outcome
-              </button>
-            </div>
-          )}
 
-          {/* Conditionally render "Income" button only if on the first page */}
-          {history.pageInfo.page === 1 && (
-            <button
-              onClick={() => handleFilterChange('income')}
-              className={`btn ${filterValue === 'income' ? 'btn-primary' : ''}`}
-            >
-              Income
-            </button>
-          )}
-        </div>
         {history.success && (
           <div className="flex flex-col gap-4">
+            <button onClick={toggleSortOrder} className="btn btn-secondary">
+              Sort {sortOrder === 'asc' ? 'Descending' : 'Ascending'}
+            </button>
             {history.results.length === 0 ? (
               <p className="text-[#ff0000]">No data found in list.</p>
             ) : (
@@ -118,14 +113,6 @@ function SearchHistory({ userToken }) {
                 .filter((item) => {
                   const fullName = ((item.recipient && item.recipient.fullName) || '').toLowerCase();
                   return fullName.includes(search.toLowerCase());
-                })
-                .filter((item) => {
-                  if (filterValue === 'income') {
-                    return item.type === 'TOP-UP';
-                  } else if (filterValue === 'outcome') {
-                    return item.type === 'TRANSFER';
-                  }
-                  return true; // Show all if filterValue is 'all'
                 })
 
                 .map((item) => (
@@ -230,7 +217,7 @@ function SearchHistory({ userToken }) {
             )}
             <div className="flex gap-2 justify-center items-center">
               <button
-                onClick={() => getTransaction(history.pageInfo.page - 1, search, filterValue)}
+                onClick={() => getTransaction(history.pageInfo.page - 1, search, filterValue, 'all', sortOrder)}
                 disabled={history.pageInfo.page <= 1}
                 className="btn btn-primary"
               >
@@ -240,7 +227,7 @@ function SearchHistory({ userToken }) {
                 page {history.pageInfo.page} of {history.pageInfo.totalPage}
               </div>
               <button
-                onClick={() => getTransaction(history.pageInfo.page + 1, search, filterValue)}
+                onClick={() => getTransaction(history.pageInfo.page + 1, search, filterValue, 'all', sortOrder)}
                 disabled={history.pageInfo.page >= history.pageInfo.totalPage}
                 className="btn btn-primary"
               >
